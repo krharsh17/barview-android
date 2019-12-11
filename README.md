@@ -57,5 +57,7 @@ barModels.add(new BarModel(
     )
 );
 
+//Add more BarModels here..
+
 barview.setData(barModels);
 ```
