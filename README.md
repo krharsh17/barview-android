@@ -1,4 +1,7 @@
-# barview-android
+
+# BarView
+
+[![Build status](https://ci.appveyor.com/api/projects/status/7jihqvjy458qhko8?svg=true)](https://ci.appveyor.com/project/krharsh17/barview-android) 	![JitPack](https://img.shields.io/jitpack/v/github/krharsh17/barview-android?color=%23FFAE42) 	![GitHub release (latest by date)](https://img.shields.io/github/v/release/krharsh17/barview-android)
 
 ## Installation
 
