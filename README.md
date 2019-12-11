@@ -36,6 +36,9 @@ dependencies {
         app:valueTextColor="#FFFFFF"
         />
 ```
+	- All `app:` attributes are optional
+	- The default values of `app:` attributes are mentioned above
+	- `barGroupSpacing` & `barHeight` are in dp, while `valueTextSize` & `labelTextSize` are in sp
 
 - Java
 ```
