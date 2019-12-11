@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BarView">
+        <attr name="barGroupSpacing" format="integer" />
+        <attr name="barHeight" format="integer" />
+        <attr name="labelTextSize" format="integer"/>
+        <attr name="valueTextSize" format="integer"/>
+
+        <attr name="labelTextColor" format="string"/>
+        <attr name="valueTextColor" format="string"/>
+        <attr name="rippleColor" format="string"/>
+
+    </declare-styleable>
+</resources>
