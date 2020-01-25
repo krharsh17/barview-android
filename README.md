@@ -5,6 +5,10 @@
 
 [![](https://jitpack.io/v/krharsh17/barview-android/month.svg)](https://jitpack.io/#krharsh17/barview-android)
 
+## Goal
+
+![Design](https://i.ibb.co/C8XtG1F/Metric-Screen-Bar-Graph.png)
+
 ## Installation
 
 - In your project level build.gradle
