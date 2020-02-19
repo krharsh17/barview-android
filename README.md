@@ -5,6 +5,14 @@
 
 [![](https://jitpack.io/v/krharsh17/barview-android/month.svg)](https://jitpack.io/#krharsh17/barview-android)
 
+
+![](https://forthebadge.com/images/badges/built-for-android.svg)  ![](https://forthebadge.com/images/badges/check-it-out.svg)
+
+
+BarView is a native android UI library that allows representation of data in bar graph with slick look and smooth animations. Currently the library is in a very early stage so it does not look very good 😋.
+
+This project has been selected for **GirlScript Summer of Code 2020**. Keep watching the repo for more updates!
+
 ## Goal
 
 ![Design](https://i.ibb.co/C8XtG1F/Metric-Screen-Bar-Graph.png)
