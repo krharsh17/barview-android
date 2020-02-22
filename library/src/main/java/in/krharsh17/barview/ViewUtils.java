@@ -11,9 +11,6 @@ import android.view.View;
 
 import static android.view.View.LAYER_TYPE_SOFTWARE;
 
-/**
- * Created by ArmanSo on 4/16/17.
- */
 
 class ViewUtils {
 
