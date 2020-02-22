@@ -17,6 +17,10 @@ This project has been selected for **GirlScript Summer of Code 2020**. Keep watc
 
 ![Design](https://i.ibb.co/C8XtG1F/Metric-Screen-Bar-Graph.png)
 
+## Current Progress
+
+![Progress](https://i.imgur.com/AZl0z59.jpg)
+
 ## Installation
 
 - In your project level build.gradle
