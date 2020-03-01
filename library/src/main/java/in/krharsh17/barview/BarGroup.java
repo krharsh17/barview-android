@@ -14,7 +14,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.constraintlayout.widget.Constraints;
 
-class BarGroup extends ConstraintLayout {
+class BarGroup extends ConstraintLayout implements Constants {
     Context context;
 
     TextView label;
@@ -29,7 +29,7 @@ class BarGroup extends ConstraintLayout {
     float progress;
 
     private int BAR_MARGIN = 6, VERTICAL_SPACING = 48, BAR_HEIGHT = 20, LABEL_FONT_SIZE = 18, VALUE_FONT_SIZE = 9;
-    private String LABEL_TEXT_COLOR = "#424242", VALUE_TEXT_COLOR = "#FFFFFF", RIPPLE_COLOUR = "#EEEEEE";// has to be >2
+    private String LABEL_TEXT_COLOR = labelTextColor, VALUE_TEXT_COLOR = valueTextColor, RIPPLE_COLOUR = rippleColor;// has to be >2
 
     BarGroup(Context context, String labelText, String color, String valueText, float progress) {
         super(context);
@@ -124,7 +124,7 @@ class BarGroup extends ConstraintLayout {
         bar.setBackgroundColor(Color.parseColor(color));
 //        bar.setBackground(ViewUtils.generateBackgroundWithShadow(this, Color.parseColor(color),
 //                0, Color.parseColor(color), 1, Gravity.BOTTOM));
-        Bar.setRippleDrawable(bar, Color.parseColor(color), Color.parseColor("#EEEEEE"));
+        Bar.setRippleDrawable(bar, Color.parseColor(color), Color.parseColor(rippleColor));
         bar.setProgress(progress);
     }
 

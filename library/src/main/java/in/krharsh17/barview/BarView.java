@@ -14,7 +14,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BarView extends ScrollView {
+public class BarView extends ScrollView implements Constants {
     LinearLayout containerLayout;
     Context context;
 
@@ -22,7 +22,7 @@ public class BarView extends ScrollView {
     List<BarModel> data;
 
     private int BAR_MARGIN = 6, VERTICAL_SPACING = 48, BAR_HEIGHT = 20, LABEL_FONT_SIZE = 18, VALUE_FONT_SIZE = 9;
-    private String LABEL_TEXT_COLOR = "#424242", VALUE_TEXT_COLOR = "#FFFFFF", RIPPLE_COLOUR = "#EEEEEE";// has to be >2
+    private String LABEL_TEXT_COLOR = labelTextColor, VALUE_TEXT_COLOR = valueTextColor, RIPPLE_COLOUR = rippleColor;// has to be >2
 
     public void setData(List<BarModel> data) {
         this.data = data;
@@ -30,7 +30,7 @@ public class BarView extends ScrollView {
     }
 
     void populateBarView() {
-        for(BarModel b : data){
+        for (BarModel b : data) {
             addBar(b);
         }
 
@@ -96,7 +96,7 @@ public class BarView extends ScrollView {
 
         this.addView(containerLayout);
 
-        if(attrs != null){
+        if (attrs != null) {
 
             final TypedArray a = context.obtainStyledAttributes(attrs,
                     R.styleable.BarView, 0, 0);
@@ -114,20 +114,19 @@ public class BarView extends ScrollView {
             VALUE_TEXT_COLOR = a.getString(R.styleable.BarView_valueTextColor);
             RIPPLE_COLOUR = a.getString(R.styleable.BarView_rippleColor);
 
-            if(LABEL_TEXT_COLOR == null)
-                LABEL_TEXT_COLOR = "#424242";
-            if(VALUE_TEXT_COLOR == null)
-                VALUE_TEXT_COLOR = "#FFFFFF";
-            if(RIPPLE_COLOUR == null)
-                RIPPLE_COLOUR = "#EEEEEE";
-
+            if (LABEL_TEXT_COLOR == null)
+                LABEL_TEXT_COLOR = labelTextColor;
+            if (VALUE_TEXT_COLOR == null)
+                VALUE_TEXT_COLOR = valueTextColor;
+            if (RIPPLE_COLOUR == null)
+                RIPPLE_COLOUR = rippleColor;
             a.recycle();
         }
 
     }
 
     public static String getRandomColor() {
-        char[] letters = "0123456789ABCDEF".toCharArray();
+        char[] letters = charArray.toCharArray();
         StringBuilder color = new StringBuilder("#");
         for (int i = 0; i < 6; i++) {
             color.append(letters[(int) Math.round(Math.floor(Math.random() * 16))]);
