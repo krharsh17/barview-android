@@ -46,6 +46,7 @@ class BarGroup extends ConstraintLayout implements Constants {
     }
 
 
+
     public BarGroup(Context context, String labelText, String color, String valueText, float progress, int BAR_MARGIN, int VERTICAL_SPACING, int BAR_HEIGHT, int LABEL_FONT_SIZE, int VALUE_FONT_SIZE, String LABEL_TEXT_COLOR, String VALUE_TEXT_COLOR, String RIPPLE_COLOUR) {
         super(context);
         this.context = context;
