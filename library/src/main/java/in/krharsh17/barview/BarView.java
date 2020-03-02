@@ -100,20 +100,13 @@ public class BarView extends ScrollView implements Constants {
 
             final TypedArray a = context.obtainStyledAttributes(attrs,
                     R.styleable.BarView, 0, 0);
-
-            Log.i("DEBUG", "BarGroup: " + a.getInt(R.styleable.BarView_valueTextSize, 2));
-
             VERTICAL_SPACING = a.getInteger(R.styleable.BarView_barGroupSpacing, VERTICAL_SPACING);
             BAR_HEIGHT = a.getInteger(R.styleable.BarView_barHeight, BAR_HEIGHT);
             LABEL_FONT_SIZE = a.getInteger(R.styleable.BarView_labelTextSize, LABEL_FONT_SIZE);
             VALUE_FONT_SIZE = a.getInteger(R.styleable.BarView_valueTextSize, VALUE_FONT_SIZE);
-
-            Log.i("DEBUG", "BarGroup: " + LABEL_FONT_SIZE);
-
             LABEL_TEXT_COLOR = a.getString(R.styleable.BarView_labelTextColor);
             VALUE_TEXT_COLOR = a.getString(R.styleable.BarView_valueTextColor);
             RIPPLE_COLOUR = a.getString(R.styleable.BarView_rippleColor);
-
             if (LABEL_TEXT_COLOR == null)
                 LABEL_TEXT_COLOR = labelTextColor;
             if (VALUE_TEXT_COLOR == null)
@@ -122,7 +115,6 @@ public class BarView extends ScrollView implements Constants {
                 RIPPLE_COLOUR = rippleColor;
             a.recycle();
         }
-
     }
 
     public static String getRandomColor() {
