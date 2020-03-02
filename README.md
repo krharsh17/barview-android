@@ -25,7 +25,7 @@ This project has been selected for **GirlScript Summer of Code 2020**. To begin 
 
 ## Current Progress
 
-![Progress](https://i.imgur.com/AZl0z59.jpg)
+![Progress](https://i.imgur.com/ZKLBH03.png)
 
 ## Installation
 
