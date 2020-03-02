@@ -1,6 +1,7 @@
 
 # BarView
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/896439f51e884b569b90e34527f06676)](https://app.codacy.com/manual/kharsh39/barview-android?utm_source=github.com&utm_medium=referral&utm_content=krharsh17/barview-android&utm_campaign=Badge_Grade_Dashboard)
 [![Build status](https://ci.appveyor.com/api/projects/status/7jihqvjy458qhko8?svg=true)](https://ci.appveyor.com/project/krharsh17/barview-android) 	![JitPack](https://img.shields.io/jitpack/v/github/krharsh17/barview-android?color=%23FFAE42) 	![GitHub release (latest by date)](https://img.shields.io/github/v/release/krharsh17/barview-android)
 
 [![](https://jitpack.io/v/krharsh17/barview-android/month.svg)](https://jitpack.io/#krharsh17/barview-android)
