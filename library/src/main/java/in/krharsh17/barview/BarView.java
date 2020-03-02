@@ -38,10 +38,10 @@ public class BarView extends ScrollView implements Constants {
     private void addBar(BarModel data) {
         BarGroup barGroup = new BarGroup(
                 context,
-                data.label,
-                data.color,
-                data.value,
-                data.fillRatio,
+                data.getLabel(),
+                data.getColor(),
+                data.getValue(),
+                data.getFillRatio(),
                 BAR_MARGIN,
                 VERTICAL_SPACING,
                 BAR_HEIGHT,
