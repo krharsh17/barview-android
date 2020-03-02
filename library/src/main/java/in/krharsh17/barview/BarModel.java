@@ -1,8 +1,10 @@
 package in.krharsh17.barview;
 
 public class BarModel {
-    String label, value, color;
-    Float fillRatio;
+    private String label;
+    private String value;
+    private String color;
+    private Float fillRatio;
 
     public String getLabel() {
     	return this.label;

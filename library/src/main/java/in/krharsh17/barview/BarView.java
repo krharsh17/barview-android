@@ -15,11 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BarView extends ScrollView implements Constants {
-    LinearLayout containerLayout;
-    Context context;
+    private LinearLayout containerLayout;
+    private Context context;
 
-    List<BarGroup> barGroups;
-    List<BarModel> data;
+    private List<BarGroup> barGroups;
+    private List<BarModel> data;
 
     private int BAR_MARGIN = 6, VERTICAL_SPACING = 48, BAR_HEIGHT = 20, LABEL_FONT_SIZE = 18, VALUE_FONT_SIZE = 9;
     private String LABEL_TEXT_COLOR = labelTextColor, VALUE_TEXT_COLOR = valueTextColor, RIPPLE_COLOUR = rippleColor;// has to be >2
@@ -29,14 +29,13 @@ public class BarView extends ScrollView implements Constants {
         populateBarView();
     }
 
-    void populateBarView() {
+    private void populateBarView() {
         for (BarModel b : data) {
             addBar(b);
         }
-
     }
 
-    void addBar(BarModel data) {
+    private void addBar(BarModel data) {
         BarGroup barGroup = new BarGroup(
                 context,
                 data.label,

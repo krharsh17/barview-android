@@ -23,9 +23,12 @@ class BarGroup extends ConstraintLayout implements Constants {
     TextView value;
 
     ConstraintSet constraintSet;
-    LayoutParams labelParams, initialParams;
+    LayoutParams labelParams;
+    LayoutParams initialParams;
 
-    String labelText, color, valueText;
+    String labelText;
+    String color;
+    String valueText;
     float progress;
 
     private int BAR_MARGIN = 6, VERTICAL_SPACING = 48, BAR_HEIGHT = 20, LABEL_FONT_SIZE = 18, VALUE_FONT_SIZE = 9;
@@ -47,7 +50,20 @@ class BarGroup extends ConstraintLayout implements Constants {
 
 
 
-    public BarGroup(Context context, String labelText, String color, String valueText, float progress, int BAR_MARGIN, int VERTICAL_SPACING, int BAR_HEIGHT, int LABEL_FONT_SIZE, int VALUE_FONT_SIZE, String LABEL_TEXT_COLOR, String VALUE_TEXT_COLOR, String RIPPLE_COLOUR) {
+    public BarGroup(
+        Context context, 
+        String labelText, 
+        String color, 
+        String valueText, 
+        float progress, 
+        int BAR_MARGIN, 
+        int VERTICAL_SPACING, 
+        int BAR_HEIGHT, 
+        int LABEL_FONT_SIZE, 
+        int VALUE_FONT_SIZE, 
+        String LABEL_TEXT_COLOR, 
+        String VALUE_TEXT_COLOR, 
+        String RIPPLE_COLOUR) {
         super(context);
         this.context = context;
         this.labelText = labelText;
@@ -116,7 +132,7 @@ class BarGroup extends ConstraintLayout implements Constants {
         this.addView(initial);
     }
 
-    void setupBar() {
+    public void setupBar() {
         bar.setLayoutParams(new LinearLayout.LayoutParams(
                 dp(Math.round(context.getResources().getDisplayMetrics().widthPixels / 3.2)), dp(BAR_HEIGHT)
         ));
@@ -176,7 +192,7 @@ class BarGroup extends ConstraintLayout implements Constants {
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics()));
     }
 
-    String parseLabel(String labelText) {
+    private String parseLabel(String labelText) {
         String[] tokens = labelText.split(" ");
         StringBuilder finalizedString = new StringBuilder();
         for (String s : tokens) {
