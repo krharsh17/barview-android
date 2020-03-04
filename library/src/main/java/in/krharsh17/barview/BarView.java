@@ -3,7 +3,6 @@ package in.krharsh17.barview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -21,8 +20,81 @@ public class BarView extends ScrollView implements Constants {
     private List<BarGroup> barGroups;
     private List<BarModel> data;
 
-    private int BAR_MARGIN = 6, VERTICAL_SPACING = 48, BAR_HEIGHT = 20, LABEL_FONT_SIZE = 18, VALUE_FONT_SIZE = 9;
-    private String LABEL_TEXT_COLOR = labelTextColor, VALUE_TEXT_COLOR = valueTextColor, RIPPLE_COLOUR = rippleColor;// has to be >2
+    private int barMargin = 6;
+    private int verticalSpacing = 48;
+    private int barHeight = 20;
+    private int labelFontSize = 18;
+    private int valueFontSize = 9;
+
+    private String labelTextColor = Constants.LABEL_TEXT_COLOR;
+    private String valueTextColor = Constants.VALUE_TEXT_COLOR;
+    private String rippleColor = Constants.RIPPLE_COLOR;                   // has to be >2
+
+    public int getBarMargin() {
+        return barMargin;
+    }
+
+    public void setBarMargin(int barMargin) {
+        this.barMargin = barMargin;
+    }
+
+    public int getVerticalSpacing() {
+        return verticalSpacing;
+    }
+
+    public void setVerticalSpacing(int verticalSpacing) {
+        this.verticalSpacing = verticalSpacing;
+    }
+
+    public int getBarHeight() {
+        return barHeight;
+    }
+
+    public void setBarHeight(int barHeight) {
+        this.barHeight = barHeight;
+    }
+
+    public int getLabelFontSize() {
+        return labelFontSize;
+    }
+
+    public void setLabelFontSize(int labelFontSize) {
+        this.labelFontSize = labelFontSize;
+    }
+
+    public int getValueFontSize() {
+        return valueFontSize;
+    }
+
+    public void setValueFontSize(int valueFontSize) {
+        this.valueFontSize = valueFontSize;
+    }
+
+    public String getLabelTextColor() {
+        return labelTextColor;
+    }
+
+    public void setLabelTextColor(String labelTextColor) {
+        this.labelTextColor = labelTextColor;
+    }
+
+    public String getValueTextColor() {
+        return valueTextColor;
+    }
+
+    public void setValueTextColor(String valueTextColor) {
+        this.valueTextColor = valueTextColor;
+    }
+
+    public String getRippleColor() {
+        return rippleColor;
+    }
+
+    public void setRippleColor(String rippleColor) {
+        this.rippleColor = rippleColor;
+    }
+
+
 
     public void setData(List<BarModel> data) {
         this.data = data;
@@ -42,14 +114,14 @@ public class BarView extends ScrollView implements Constants {
                 data.getColor(),
                 data.getValue(),
                 data.getFillRatio(),
-                BAR_MARGIN,
-                VERTICAL_SPACING,
-                BAR_HEIGHT,
-                LABEL_FONT_SIZE,
-                VALUE_FONT_SIZE,
-                LABEL_TEXT_COLOR,
-                VALUE_TEXT_COLOR,
-                RIPPLE_COLOUR
+            barMargin,
+            verticalSpacing,
+            barHeight,
+            labelFontSize,
+            valueFontSize,
+            labelTextColor,
+            valueTextColor,
+            rippleColor
         );
         barGroup.setLayoutParams(new ConstraintLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -99,25 +171,25 @@ public class BarView extends ScrollView implements Constants {
 
             final TypedArray a = context.obtainStyledAttributes(attrs,
                     R.styleable.BarView, 0, 0);
-            VERTICAL_SPACING = a.getInteger(R.styleable.BarView_barGroupSpacing, VERTICAL_SPACING);
-            BAR_HEIGHT = a.getInteger(R.styleable.BarView_barHeight, BAR_HEIGHT);
-            LABEL_FONT_SIZE = a.getInteger(R.styleable.BarView_labelTextSize, LABEL_FONT_SIZE);
-            VALUE_FONT_SIZE = a.getInteger(R.styleable.BarView_valueTextSize, VALUE_FONT_SIZE);
-            LABEL_TEXT_COLOR = a.getString(R.styleable.BarView_labelTextColor);
-            VALUE_TEXT_COLOR = a.getString(R.styleable.BarView_valueTextColor);
-            RIPPLE_COLOUR = a.getString(R.styleable.BarView_rippleColor);
-            if (LABEL_TEXT_COLOR == null)
-                LABEL_TEXT_COLOR = labelTextColor;
-            if (VALUE_TEXT_COLOR == null)
-                VALUE_TEXT_COLOR = valueTextColor;
-            if (RIPPLE_COLOUR == null)
-                RIPPLE_COLOUR = rippleColor;
+            verticalSpacing = a.getInteger(R.styleable.BarView_barGroupSpacing, verticalSpacing);
+            barHeight = a.getInteger(R.styleable.BarView_barHeight, barHeight);
+            labelFontSize = a.getInteger(R.styleable.BarView_labelTextSize, labelFontSize);
+            valueFontSize = a.getInteger(R.styleable.BarView_valueTextSize, valueFontSize);
+            labelTextColor = a.getString(R.styleable.BarView_labelTextColor);
+            valueTextColor = a.getString(R.styleable.BarView_valueTextColor);
+            rippleColor = a.getString(R.styleable.BarView_rippleColor);
+            if (labelTextColor == null)
+                labelTextColor = Constants.LABEL_TEXT_COLOR;
+            if (valueTextColor == null)
+                valueTextColor = Constants.VALUE_TEXT_COLOR;
+            if (rippleColor == null)
+                rippleColor = RIPPLE_COLOR;
             a.recycle();
         }
     }
 
     public static String getRandomColor() {
-        char[] letters = charArray.toCharArray();
+        char[] letters = CHAR_ARRAY.toCharArray();
         StringBuilder color = new StringBuilder("#");
         for (int i = 0; i < 6; i++) {
             color.append(letters[(int) Math.round(Math.floor(Math.random() * 16))]);

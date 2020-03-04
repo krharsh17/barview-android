@@ -31,8 +31,14 @@ class BarGroup extends ConstraintLayout implements Constants {
     String valueText;
     float progress;
 
-    private int BAR_MARGIN = 6, VERTICAL_SPACING = 48, BAR_HEIGHT = 20, LABEL_FONT_SIZE = 18, VALUE_FONT_SIZE = 9;
-    private String LABEL_TEXT_COLOR = labelTextColor, VALUE_TEXT_COLOR = valueTextColor, RIPPLE_COLOUR = rippleColor;// has to be >2
+    private int BAR_MARGIN = 6;
+    private int VERTICAL_SPACING = 48;
+    private int BAR_HEIGHT = 20;
+    private int LABEL_FONT_SIZE = 18;
+    private int VALUE_FONT_SIZE = 9;
+    private String labelTextColor = LABEL_TEXT_COLOR;
+    private String valueTextColor = VALUE_TEXT_COLOR;
+    private String rippleColor = RIPPLE_COLOR;                        // has to be >2
 
     BarGroup(Context context, String labelText, String color, String valueText, float progress) {
         super(context);
@@ -61,7 +67,7 @@ class BarGroup extends ConstraintLayout implements Constants {
         int BAR_HEIGHT, 
         int LABEL_FONT_SIZE, 
         int VALUE_FONT_SIZE, 
-        String LABEL_TEXT_COLOR, 
+        String labelTextColor,
         String VALUE_TEXT_COLOR, 
         String RIPPLE_COLOUR) {
         super(context);
@@ -75,9 +81,9 @@ class BarGroup extends ConstraintLayout implements Constants {
         this.BAR_HEIGHT = BAR_HEIGHT;
         this.LABEL_FONT_SIZE = LABEL_FONT_SIZE;
         this.VALUE_FONT_SIZE = VALUE_FONT_SIZE;
-        this.LABEL_TEXT_COLOR = LABEL_TEXT_COLOR;
-        this.VALUE_TEXT_COLOR = VALUE_TEXT_COLOR;
-        this.RIPPLE_COLOUR = RIPPLE_COLOUR;
+        this.labelTextColor = labelTextColor;
+        this.valueTextColor = VALUE_TEXT_COLOR;
+        this.rippleColor = RIPPLE_COLOUR;
 
         label = new TextView(context);
         initial = new View(context);
@@ -112,7 +118,7 @@ class BarGroup extends ConstraintLayout implements Constants {
                 dp(VERTICAL_SPACING / 2)
         );
         label.setText(parseLabel(labelText));
-        label.setTextColor(Color.parseColor(LABEL_TEXT_COLOR));
+        label.setTextColor(Color.parseColor(labelTextColor));
         label.setTextSize(TypedValue.COMPLEX_UNIT_SP, LABEL_FONT_SIZE);
         label.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/josefin_sans.ttf"));
         label.setLayoutParams(labelParams);
@@ -126,7 +132,7 @@ class BarGroup extends ConstraintLayout implements Constants {
         initialParams.rightMargin = dp(12);
         initial.setLayoutParams(initialParams);
         initial.setBackgroundColor(Color.parseColor(color));
-        Bar.setRippleDrawable(initial, Color.parseColor(color), Color.parseColor(RIPPLE_COLOUR));
+        Bar.setRippleDrawable(initial, Color.parseColor(color), Color.parseColor(rippleColor));
         initial.setClickable(true);
         initial.setFocusable(true);
         this.addView(initial);
@@ -151,13 +157,13 @@ class BarGroup extends ConstraintLayout implements Constants {
         value.setRotation(90);
         value.setGravity(Gravity.CENTER);
         value.setPadding(0, 0, 0, dp(8));
-        value.setTextColor(Color.parseColor(VALUE_TEXT_COLOR));
+        value.setTextColor(Color.parseColor(valueTextColor));
         value.setTextSize(TypedValue.COMPLEX_UNIT_SP, VALUE_FONT_SIZE);
         value.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/josefin_sans.ttf"));
         value.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
         value.setClickable(true);
         value.setFocusable(true);
-        Bar.setRippleDrawable(value, Color.parseColor(color), Color.parseColor(RIPPLE_COLOUR));
+        Bar.setRippleDrawable(value, Color.parseColor(color), Color.parseColor(rippleColor));
         this.addView(value);
     }
 
