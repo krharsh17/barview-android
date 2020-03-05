@@ -139,8 +139,9 @@ class BarGroup extends ConstraintLayout implements Constants {
     }
 
     public void setupBar() {
+        int screen_width = Math.round((160*context.getResources().getDisplayMetrics().widthPixels)/(context.getResources().getDisplayMetrics().xdpi));
         bar.setLayoutParams(new LinearLayout.LayoutParams(
-                dp(Math.round(context.getResources().getDisplayMetrics().widthPixels / 3.2)), dp(BAR_HEIGHT)
+                screen_width, dp(BAR_HEIGHT)
         ));
         bar.setPadding(0,dp(1), 0, dp(1));
         this.addView(bar);

@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
                 "Apple",
                 "25.89",
                 getRandomColor(),
-                0.26f
+                1f
         ));
 
         barModels.add(new BarModel(
