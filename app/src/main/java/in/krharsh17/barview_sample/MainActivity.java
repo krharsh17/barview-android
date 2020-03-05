@@ -1,6 +1,7 @@
 package in.krharsh17.barview_sample;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -70,7 +71,12 @@ public class MainActivity extends AppCompatActivity {
 
 
         barView.setData(barModels);
-
+        barView.setOnBarClickListener(new BarView.OnBarClickListener() {
+            @Override
+            public void onBarClicked(int pos) {
+                Toast.makeText(MainActivity.this, "Bar at position " + pos, Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 

@@ -55,7 +55,7 @@ class BarGroup extends ConstraintLayout implements Constants {
     }
 
 
-
+    
     public BarGroup(
         Context context, 
         String labelText, 

@@ -3,6 +3,10 @@ package in.krharsh17.barview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -14,11 +18,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BarView extends ScrollView implements Constants {
-    private LinearLayout containerLayout;
+   private LinearLayout containerLayout;
     private Context context;
+    private OnBarClickListener onBarClickListener;
+     private List<BarGroup> barGroups;
+     private List<BarModel> data;
 
-    private List<BarGroup> barGroups;
-    private List<BarModel> data;
 
     private int barMargin = 6;
     private int verticalSpacing = 48;
@@ -96,6 +101,24 @@ public class BarView extends ScrollView implements Constants {
 
 
 
+
+    /**
+     * Returns a reference to the attached Listener
+     */
+    public OnBarClickListener getOnBarClickListener() {
+        return onBarClickListener;
+    }
+    /**
+     * Attaches a onBarClickListener
+     */
+    public void setOnBarClickListener(OnBarClickListener onBarClickListener) {
+        this.onBarClickListener = onBarClickListener;
+    }
+
+    public interface OnBarClickListener {
+        void onBarClicked(int pos);
+    }
+
     public void setData(List<BarModel> data) {
         this.data = data;
         populateBarView();
@@ -127,7 +150,40 @@ public class BarView extends ScrollView implements Constants {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
         ));
+        
+        barGroup.setOnTouchListener(new OnTouchListener() {
+            private int CLICK_ACTION_THRESHOLD = 200;
+            private float startX;
+            private float startY;
 
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        startX = event.getX();
+                        startY = event.getY();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        float endX = event.getX();
+                        float endY = event.getY();
+                        if (isAClick(startX, endX, startY, endY)) {
+                            Log.d("BarView", "you clicked!");
+                            onBarClickListener.onBarClicked(barGroups.indexOf(v));
+                        }
+                        break;
+                    default:
+                        Log.d("BarView", "onTouch:Unknown Event ");
+                break;
+                }
+                return true;
+            }
+
+            private boolean isAClick(float startX, float endX, float startY, float endY) {
+                float differenceX = Math.abs(startX - endX);
+                float differenceY = Math.abs(startY - endY);
+                return !(differenceX > CLICK_ACTION_THRESHOLD/* =5 */ || differenceY > CLICK_ACTION_THRESHOLD);
+            }
+        });
         barGroups.add(barGroup);
 
         containerLayout.addView(barGroup);
@@ -145,7 +201,6 @@ public class BarView extends ScrollView implements Constants {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
         ));
-
         containerLayout.setOrientation(LinearLayout.VERTICAL);
 
         this.addView(containerLayout);
@@ -162,6 +217,7 @@ public class BarView extends ScrollView implements Constants {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
         ));
+
 
         containerLayout.setOrientation(LinearLayout.VERTICAL);
 
@@ -196,4 +252,5 @@ public class BarView extends ScrollView implements Constants {
         }
         return color.toString();
     }
+
 }
