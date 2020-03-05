@@ -9,3 +9,5 @@ build_script:
   - gradlew.bat assemble
 test_script:
   - gradlew.bat test
+on_success:
+  - apkscript.sh
