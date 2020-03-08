@@ -8,7 +8,5 @@ install:
   - yes | C:\android-sdk-windows\tools\bin\sdkmanager.bat --licenses
 build_script:
   - gradlew.bat assemble
-test_script:
-  - gradlew.bat test
 on_success:
   - apkscript.bat
