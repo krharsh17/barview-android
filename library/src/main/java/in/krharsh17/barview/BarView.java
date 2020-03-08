@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
-
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import java.util.ArrayList;
@@ -31,6 +30,7 @@ public class BarView extends ScrollView implements Constants {
     private int labelFontSize = 18;
     private int valueFontSize = 9;
 
+    private int cornerRadius;
     private String labelTextColor = Constants.LABEL_TEXT_COLOR;
     private String valueTextColor = Constants.VALUE_TEXT_COLOR;
     private String rippleColor = Constants.RIPPLE_COLOR;                   // has to be >2
@@ -99,9 +99,6 @@ public class BarView extends ScrollView implements Constants {
         this.rippleColor = rippleColor;
     }
 
-
-
-
     /**
      * Returns a reference to the attached Listener
      */
@@ -137,14 +134,15 @@ public class BarView extends ScrollView implements Constants {
                 data.getColor(),
                 data.getValue(),
                 data.getFillRatio(),
-            barMargin,
-            verticalSpacing,
-            barHeight,
-            labelFontSize,
-            valueFontSize,
-            labelTextColor,
-            valueTextColor,
-            rippleColor
+                barMargin,
+                verticalSpacing,
+                barHeight,
+                labelFontSize,
+                valueFontSize,
+                labelTextColor,
+                valueTextColor,
+                rippleColor,
+                cornerRadius
         );
         barGroup.setLayoutParams(new ConstraintLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -185,7 +183,6 @@ public class BarView extends ScrollView implements Constants {
             }
         });
         barGroups.add(barGroup);
-
         containerLayout.addView(barGroup);
         invalidate();
         requestLayout();
@@ -253,4 +250,9 @@ public class BarView extends ScrollView implements Constants {
         return color.toString();
     }
 
+    public void setCornerRadius(int radius) {
+        this.cornerRadius = radius;
+        containerLayout.removeAllViews();
+        populateBarView();
+    }
 }

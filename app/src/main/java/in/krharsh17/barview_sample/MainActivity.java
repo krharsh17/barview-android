@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import java.util.ArrayList;
 
@@ -17,13 +16,13 @@ import static in.krharsh17.barview.BarView.getRandomColor;
 public class MainActivity extends AppCompatActivity {
 
     BarView barView;
+    int cornerRadius = 20;//in dp
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ConstraintLayout constraintLayout = findViewById(R.id.main_layout);
         barView = findViewById(R.id.barview);
         ArrayList<BarModel> barModels = new ArrayList<>();
 
@@ -68,9 +67,10 @@ public class MainActivity extends AppCompatActivity {
                 getRandomColor(),
                 0.20f
         ));
-
-
         barView.setData(barModels);
+      
+        barView.setCornerRadius(cornerRadius);
+
         barView.setOnBarClickListener(new BarView.OnBarClickListener() {
             @Override
             public void onBarClicked(int pos) {
