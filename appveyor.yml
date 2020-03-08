@@ -1,3 +1,4 @@
+
 environment:
   matrix:
     - ANDROID_HOME: "C:\\android-sdk-windows"
@@ -10,4 +11,4 @@ build_script:
 test_script:
   - gradlew.bat test
 on_success:
-  - .\apkscript.sh
+  - apkscript.bat
