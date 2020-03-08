@@ -1,6 +1,6 @@
 echo %APPVEYOR_REPO_BRANCH%
 echo "Building a Pull Request"
-git config --global user.name "Raghav Awasthi"
+git config --global user.name "RaghavAwasthi"
 git config --global user.email "raghavawasthi2014@gmail.com"
 
 git clone --quiet --branch=apk https://github.com/RaghavAwasthi/barview-android apk 
