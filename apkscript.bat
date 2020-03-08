@@ -3,7 +3,7 @@ echo "Building a Pull Request"
 git config --global user.name "Raghav Awasthi"
 git config --global user.email "raghavawasthi2014@gmail.com"
 
-git clone --quiet --branch=apk https://RaghavAwasthi:$GITHUB_API_KEY@github.com/RaghavAwasthi/barview-android apk 
+git clone --quiet --branch=apk https://github.com/RaghavAwasthi/barview-android apk 
 ls
 cd apk
 
