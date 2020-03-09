@@ -17,7 +17,7 @@ git add test-android.apk
 git commit -am "[Auto] Update Test Apk (%date% %time%)"
 echo "commit Done"
 
+git push origin apk --force --quiet 
+
 git branch -D apk
 git branch -m apk
-
-git push origin apk --force --quiet 
