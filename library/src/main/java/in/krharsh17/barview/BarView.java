@@ -2,6 +2,8 @@ package in.krharsh17.barview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -17,12 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BarView extends ScrollView implements Constants {
-   private LinearLayout containerLayout;
+    private LinearLayout containerLayout;
     private Context context;
     private OnBarClickListener onBarClickListener;
-     private List<BarGroup> barGroups;
-     private List<BarModel> data;
-
+    private List<BarGroup> barGroups;
+    private List<BarModel> data;
 
     private int barMargin = 6;
     private int verticalSpacing = 48;
@@ -30,10 +31,14 @@ public class BarView extends ScrollView implements Constants {
     private int labelFontSize = 18;
     private int valueFontSize = 9;
 
+    private String backgroundColor;
+    private String gradientStart;
+    private String gradientEnd;
+    private String gradientDirection;
     private int cornerRadius;
     private String labelTextColor = Constants.LABEL_TEXT_COLOR;
     private String valueTextColor = Constants.VALUE_TEXT_COLOR;
-    private String rippleColor = Constants.RIPPLE_COLOR;                   // has to be >2
+    private String rippleColor = Constants.RIPPLE_COLOR; // has to be >2
 
     public int getBarMargin() {
         return barMargin;
@@ -105,6 +110,7 @@ public class BarView extends ScrollView implements Constants {
     public OnBarClickListener getOnBarClickListener() {
         return onBarClickListener;
     }
+
     /**
      * Attaches a onBarClickListener
      */
@@ -127,28 +133,36 @@ public class BarView extends ScrollView implements Constants {
         }
     }
 
+    public void setBackgroundColor(String color) {
+        containerLayout.setBackgroundColor(Color.parseColor(color));
+    }
+
+    public void setBackgroundGradient(String startColor, String endColor, String direction) {
+        GradientDrawable gd;
+        switch (direction) {
+        case "horizontal":
+            gd = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT,
+                    new int[] { Color.parseColor(startColor), Color.parseColor(endColor) });
+            break;
+        case "vertical":
+            gd = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
+                    new int[] { Color.parseColor(startColor), Color.parseColor(endColor) });
+            break;
+        default:
+            gd = null;
+            break;
+        }
+        if (gd != null)
+            containerLayout.setBackground(gd);
+    }
+
     private void addBar(BarModel data) {
-        BarGroup barGroup = new BarGroup(
-                context,
-                data.getLabel(),
-                data.getColor(),
-                data.getValue(),
-                data.getFillRatio(),
-                barMargin,
-                verticalSpacing,
-                barHeight,
-                labelFontSize,
-                valueFontSize,
-                labelTextColor,
-                valueTextColor,
-                rippleColor,
-                cornerRadius
-        );
-        barGroup.setLayoutParams(new ConstraintLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-        ));
-        
+        BarGroup barGroup = new BarGroup(context, data.getLabel(), data.getColor(), data.getValue(),
+                data.getFillRatio(), barMargin, verticalSpacing, barHeight, labelFontSize, valueFontSize,
+                labelTextColor, valueTextColor, rippleColor, cornerRadius);
+        barGroup.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+
         barGroup.setOnTouchListener(new OnTouchListener() {
             private int CLICK_ACTION_THRESHOLD = 200;
             private float startX;
@@ -157,21 +171,21 @@ public class BarView extends ScrollView implements Constants {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        startX = event.getX();
-                        startY = event.getY();
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        float endX = event.getX();
-                        float endY = event.getY();
-                        if (isAClick(startX, endX, startY, endY)) {
-                            Log.d("BarView", "you clicked!");
-                            onBarClickListener.onBarClicked(barGroups.indexOf(v));
-                        }
-                        break;
-                    default:
-                        Log.d("BarView", "onTouch:Unknown Event ");
-                break;
+                case MotionEvent.ACTION_DOWN:
+                    startX = event.getX();
+                    startY = event.getY();
+                    break;
+                case MotionEvent.ACTION_UP:
+                    float endX = event.getX();
+                    float endY = event.getY();
+                    if (isAClick(startX, endX, startY, endY)) {
+                        Log.d("BarView", "you clicked!");
+                        onBarClickListener.onBarClicked(barGroups.indexOf(v));
+                    }
+                    break;
+                default:
+                    Log.d("BarView", "onTouch:Unknown Event ");
+                    break;
                 }
                 return true;
             }
@@ -194,10 +208,8 @@ public class BarView extends ScrollView implements Constants {
         barGroups = new ArrayList<>();
         containerLayout = new LinearLayout(context);
 
-        containerLayout.setLayoutParams(new ScrollView.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-        ));
+        containerLayout.setLayoutParams(
+                new ScrollView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         containerLayout.setOrientation(LinearLayout.VERTICAL);
 
         this.addView(containerLayout);
@@ -210,11 +222,8 @@ public class BarView extends ScrollView implements Constants {
         barGroups = new ArrayList<>();
         containerLayout = new LinearLayout(context);
 
-        containerLayout.setLayoutParams(new ScrollView.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-        ));
-
+        containerLayout.setLayoutParams(
+                new ScrollView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         containerLayout.setOrientation(LinearLayout.VERTICAL);
 
@@ -222,8 +231,7 @@ public class BarView extends ScrollView implements Constants {
 
         if (attrs != null) {
 
-            final TypedArray a = context.obtainStyledAttributes(attrs,
-                    R.styleable.BarView, 0, 0);
+            final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BarView, 0, 0);
             verticalSpacing = a.getInteger(R.styleable.BarView_barGroupSpacing, verticalSpacing);
             barHeight = a.getInteger(R.styleable.BarView_barHeight, barHeight);
             labelFontSize = a.getInteger(R.styleable.BarView_labelTextSize, labelFontSize);
@@ -231,12 +239,23 @@ public class BarView extends ScrollView implements Constants {
             labelTextColor = a.getString(R.styleable.BarView_labelTextColor);
             valueTextColor = a.getString(R.styleable.BarView_valueTextColor);
             rippleColor = a.getString(R.styleable.BarView_rippleColor);
+            backgroundColor = a.getString(R.styleable.BarView_backgroundColor);
+            gradientStart = a.getString(R.styleable.BarView_gradientStart);
+            gradientEnd = a.getString(R.styleable.BarView_gradientEnd);
+            gradientDirection = a.getString(R.styleable.BarView_gradientDirection);
             if (labelTextColor == null)
                 labelTextColor = Constants.LABEL_TEXT_COLOR;
             if (valueTextColor == null)
                 valueTextColor = Constants.VALUE_TEXT_COLOR;
             if (rippleColor == null)
                 rippleColor = RIPPLE_COLOR;
+            if (gradientDirection == null)
+                gradientDirection = "horizontal";
+            if (backgroundColor != null)
+                setBackgroundColor(backgroundColor);
+            if (gradientStart != null && gradientEnd != null)
+                setBackgroundGradient(gradientStart, gradientEnd, gradientDirection);
+
             a.recycle();
         }
     }

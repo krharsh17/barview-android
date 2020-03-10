@@ -9,6 +9,10 @@
         <attr name="labelTextColor" format="string"/>
         <attr name="valueTextColor" format="string"/>
         <attr name="rippleColor" format="string"/>
+        <attr name="backgroundColor" format="string"/>
+        <attr name="gradientStart" format="string"/>
+        <attr name="gradientEnd" format="string"/>
+        <attr name="gradientDirection" format="string"/>
 
     </declare-styleable>
 </resources>
