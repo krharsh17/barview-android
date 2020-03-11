@@ -24,13 +24,11 @@ public class BarView extends ScrollView implements Constants {
     private OnBarClickListener onBarClickListener;
     private List<BarGroup> barGroups;
     private List<BarModel> data;
-
     private int barMargin = 6;
     private int verticalSpacing = 48;
     private int barHeight = 20;
     private int labelFontSize = 18;
     private int valueFontSize = 9;
-
     private String backgroundColor;
     private String gradientStart;
     private String gradientEnd;
@@ -38,28 +36,23 @@ public class BarView extends ScrollView implements Constants {
     private int cornerRadius;
     private String labelTextColor = Constants.LABEL_TEXT_COLOR;
     private String valueTextColor = Constants.VALUE_TEXT_COLOR;
+    private String LABEL_FONT=null,VALUE_FONT=null;
     private String rippleColor = Constants.RIPPLE_COLOR; // has to be >2
-
     public int getBarMargin() {
         return barMargin;
     }
-
     public void setBarMargin(int barMargin) {
         this.barMargin = barMargin;
     }
-
     public int getVerticalSpacing() {
         return verticalSpacing;
     }
-
     public void setVerticalSpacing(int verticalSpacing) {
         this.verticalSpacing = verticalSpacing;
     }
-
     public int getBarHeight() {
         return barHeight;
     }
-
     public void setBarHeight(int barHeight) {
         this.barHeight = barHeight;
     }
@@ -121,6 +114,7 @@ public class BarView extends ScrollView implements Constants {
     public interface OnBarClickListener {
         void onBarClicked(int pos);
     }
+ 
 
     public void setData(List<BarModel> data) {
         this.data = data;
@@ -159,10 +153,9 @@ public class BarView extends ScrollView implements Constants {
     private void addBar(BarModel data) {
         BarGroup barGroup = new BarGroup(context, data.getLabel(), data.getColor(), data.getValue(),
                 data.getFillRatio(), barMargin, verticalSpacing, barHeight, labelFontSize, valueFontSize,
-                labelTextColor, valueTextColor, rippleColor, cornerRadius);
+                labelTextColor, valueTextColor, rippleColor, cornerRadius,LABEL_FONT,VALUE_FONT);
         barGroup.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
-
         barGroup.setOnTouchListener(new OnTouchListener() {
             private int CLICK_ACTION_THRESHOLD = 200;
             private float startX;
@@ -230,12 +223,13 @@ public class BarView extends ScrollView implements Constants {
         this.addView(containerLayout);
 
         if (attrs != null) {
-
             final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BarView, 0, 0);
             verticalSpacing = a.getInteger(R.styleable.BarView_barGroupSpacing, verticalSpacing);
             barHeight = a.getInteger(R.styleable.BarView_barHeight, barHeight);
             labelFontSize = a.getInteger(R.styleable.BarView_labelTextSize, labelFontSize);
             valueFontSize = a.getInteger(R.styleable.BarView_valueTextSize, valueFontSize);
+            VALUE_FONT=a.getString(R.styleable.BarView_labelFont);
+            LABEL_FONT=a.getString(R.styleable.BarView_labelFont);
             labelTextColor = a.getString(R.styleable.BarView_labelTextColor);
             valueTextColor = a.getString(R.styleable.BarView_valueTextColor);
             rippleColor = a.getString(R.styleable.BarView_rippleColor);
@@ -255,7 +249,6 @@ public class BarView extends ScrollView implements Constants {
                 setBackgroundColor(backgroundColor);
             if (gradientStart != null && gradientEnd != null)
                 setBackgroundGradient(gradientStart, gradientEnd, gradientDirection);
-
             a.recycle();
         }
     }

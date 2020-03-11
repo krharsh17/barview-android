@@ -15,7 +15,11 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.constraintlayout.widget.Constraints;
 
+ 
+import java.util.Hashtable;
+ 
 class BarGroup extends ConstraintLayout implements Constants {
+ 
     Context context;
 
     TextView label;
@@ -24,6 +28,9 @@ class BarGroup extends ConstraintLayout implements Constants {
     TextView value;
 
     ConstraintSet constraintSet;
+ 
+  
+    public  static Hashtable<String, Typeface> fontCache = new Hashtable<>();
     LayoutParams labelParams;
     LayoutParams initialParams;
 
@@ -38,26 +45,25 @@ class BarGroup extends ConstraintLayout implements Constants {
     private int LABEL_FONT_SIZE = 18;
     private int VALUE_FONT_SIZE = 9;
     private String labelTextColor = LABEL_TEXT_COLOR;
-    private String valueTextColor = VALUE_TEXT_COLOR;
-    private String rippleColor = RIPPLE_COLOR;
+    private String valueTextColor = VALUE_TEXT_COLOR,VALUE_FONT=null,LABEL_FONT=null;
+    private String rippleColor = RIPPLE_COLOR;                        // has to be >2
     private int CORNER_RADIUS;
-
-
     public BarGroup(
-            Context context,
-            String labelText,
-            String color,
-            String valueText,
-            float progress,
-            int BAR_MARGIN,
-            int VERTICAL_SPACING,
-            int BAR_HEIGHT,
-            int LABEL_FONT_SIZE,
-            int VALUE_FONT_SIZE,
-            String labelTextColor,
-            String VALUE_TEXT_COLOR,
-            String RIPPLE_COLOUR,
-            int CORNER_RADIUS) {
+        Context context, 
+        String labelText, 
+        String color, 
+        String valueText, 
+        float progress, 
+        int BAR_MARGIN, 
+        int VERTICAL_SPACING, 
+        int BAR_HEIGHT, 
+        int LABEL_FONT_SIZE, 
+        int VALUE_FONT_SIZE, 
+        String labelTextColor,
+        String VALUE_TEXT_COLOR, 
+        String RIPPLE_COLOUR,int CORNER_RADIUS,String LABEL_FONT,String VALUE_FONT) {
+ 
+ 
         super(context);
         this.context = context;
         this.labelText = labelText;
@@ -72,8 +78,9 @@ class BarGroup extends ConstraintLayout implements Constants {
         this.labelTextColor = labelTextColor;
         this.valueTextColor = VALUE_TEXT_COLOR;
         this.rippleColor = RIPPLE_COLOUR;
+        this.LABEL_FONT=LABEL_FONT;
+        this.VALUE_FONT=VALUE_FONT;
         this.CORNER_RADIUS = CORNER_RADIUS;
-
         label = new TextView(context);
         initial = new View(context);
         bar = new Bar(context);
@@ -109,7 +116,10 @@ class BarGroup extends ConstraintLayout implements Constants {
         label.setText(parseLabel(labelText));
         label.setTextColor(Color.parseColor(labelTextColor));
         label.setTextSize(TypedValue.COMPLEX_UNIT_SP, LABEL_FONT_SIZE);
-        label.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/josefin_sans.ttf"));
+        if(LABEL_FONT!=null)
+            label.setTypeface(Typeface.createFromAsset(context.getAssets(), LABEL_FONT));
+        else
+            label.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/josefin_sans.ttf"));
         label.setLayoutParams(labelParams);
         label.setTextAlignment(TEXT_ALIGNMENT_CENTER);
         label.setGravity(Gravity.CENTER_VERTICAL);
@@ -140,6 +150,7 @@ class BarGroup extends ConstraintLayout implements Constants {
     }
 
     void setupValue() {
+
         value.setText(valueText);
         value.setBackground(context.getResources().getDrawable(R.drawable.label_background));
         value.setRotation(90);
@@ -147,14 +158,27 @@ class BarGroup extends ConstraintLayout implements Constants {
         value.setPadding(0, 0, 0, dp(8));
         value.setTextColor(Color.parseColor(valueTextColor));
         value.setTextSize(TypedValue.COMPLEX_UNIT_SP, VALUE_FONT_SIZE);
-        value.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/josefin_sans.ttf"));
+        Typeface tf=get(VALUE_FONT,context);
+        if(tf!=null)
+            value.setTypeface(tf);
         value.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
         value.setClickable(true);
         value.setFocusable(true);
         Bar.setRippleDrawable(value, Color.parseColor(color), Color.parseColor(rippleColor));
         this.addView(value);
     }
-
+    public static Typeface get(String name, Context context) {
+        Typeface tf = fontCache.get(name);
+        if (tf == null) {
+            try {
+                tf = Typeface.createFromAsset(context.getAssets(), name);
+            } catch (Exception e) {
+                return null;
+            }
+            fontCache.put(name, tf);
+        }
+        return tf;
+    }
     void applyConstraints() {
         constraintSet = new ConstraintSet();
         constraintSet.clone(this);
