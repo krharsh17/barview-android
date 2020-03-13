@@ -5,6 +5,11 @@
         <attr name="barHeight" format="integer" />
         <attr name="labelTextSize" format="integer"/>
         <attr name="valueTextSize" format="integer"/>
+        <attr name="introAnimationType" format="integer">
+            <enum name="none" value="0"/>
+            <enum name="expand" value="1"/>
+        </attr>
+        <attr name="introAnimationDuration" format="integer"/>
 
         <attr name="labelTextColor" format="string"/>
         <attr name="valueTextColor" format="string"/>

@@ -1,5 +1,6 @@
 package in.krharsh17.barview;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.ColorDrawable;
@@ -8,6 +9,7 @@ import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 
 class Bar extends View {
 
@@ -15,10 +17,16 @@ class Bar extends View {
         super(context);
     }
 
-    void setProgress(float progress) {
+    public void setProgress(float progress,int animationType,int animationDuration) {
         ViewGroup.LayoutParams params = this.getLayoutParams();
-        params.width = Math.round(params.width * (progress));
-        this.setLayoutParams(params);
+        if(animationType == BarView.INTRO_ANIM_EXPAND){
+            expand(this,animationDuration,Math.round(params.width * (progress)));
+        }
+        else if (animationType == BarView.INTRO_ANIM_NONE){
+            this.setVisibility(VISIBLE);
+            params.width = Math.round(params.width * (progress));
+            this.setLayoutParams(params);
+        }
         invalidate();
         requestLayout();
     }
@@ -44,5 +52,25 @@ class Bar extends View {
             }
         } catch (Exception e) {
         }
+    }
+
+    public static void expand(final View v, int duration, int targetWidth) {
+
+        //int prevWidth  = v.getWidth();
+        int prevWidth = 0;
+
+        v.setVisibility(View.VISIBLE);
+        ValueAnimator valueAnimator = ValueAnimator.ofInt(prevWidth, targetWidth);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                v.getLayoutParams().width = (int) animation.getAnimatedValue();
+                //v.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                v.requestLayout();
+            }
+        });
+        valueAnimator.setInterpolator(new DecelerateInterpolator());
+        valueAnimator.setDuration(duration);
+        valueAnimator.start();
     }
 }

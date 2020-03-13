@@ -24,11 +24,16 @@ public class BarView extends ScrollView implements Constants {
     private OnBarClickListener onBarClickListener;
     private List<BarGroup> barGroups;
     private List<BarModel> data;
+
+    public static final int INTRO_ANIM_NONE = 0;
+    public static final int INTRO_ANIM_EXPAND = 1;
     private int barMargin = 6;
     private int verticalSpacing = 48;
     private int barHeight = 20;
     private int labelFontSize = 18;
     private int valueFontSize = 9;
+    private int animationType = Constants.DEFAULT_INTRO_ANIMATION;
+    private int animationDuration = Constants.DEFAULT_ANIMATION_DURATION;
     private String backgroundColor;
     private String gradientStart;
     private String gradientEnd;
@@ -38,6 +43,19 @@ public class BarView extends ScrollView implements Constants {
     private String valueTextColor = Constants.VALUE_TEXT_COLOR;
     private String LABEL_FONT=null,VALUE_FONT=null;
     private String rippleColor = Constants.RIPPLE_COLOR; // has to be >2
+
+    public int getAnimationType(){ return animationType; }
+
+    public void setAnimationType(int animationType){
+        this.animationType = animationType;
+    }
+
+    public int getAnimationDuration(){ return animationDuration; }
+
+    public void setAnimationDuration(int animationDuration){
+        this.animationDuration = animationDuration;
+    }
+
     public int getBarMargin() {
         return barMargin;
     }
@@ -118,13 +136,96 @@ public class BarView extends ScrollView implements Constants {
 
     public void setData(List<BarModel> data) {
         this.data = data;
-        populateBarView();
+        if(animationType == BarView.INTRO_ANIM_NONE){
+            populateBarView(BarView.INTRO_ANIM_NONE,animationDuration);
+        }
+        else if (animationType == BarView.INTRO_ANIM_EXPAND){
+            populateBarView(BarView.INTRO_ANIM_EXPAND,animationDuration);
+        }
     }
 
-    private void populateBarView() {
-        for (BarModel b : data) {
-            addBar(b);
+    public void setData(List<BarModel> data, boolean isAnimationEnabled) {
+        this.data = data;
+        if (isAnimationEnabled){
+            if(animationType == BarView.INTRO_ANIM_NONE){
+                populateBarView(BarView.INTRO_ANIM_NONE,animationDuration);
+            }
+            else if (animationType == BarView.INTRO_ANIM_EXPAND){
+                populateBarView(BarView.INTRO_ANIM_EXPAND,animationDuration);
+            }
         }
+        else {
+            populateBarView(BarView.INTRO_ANIM_NONE,animationDuration);
+        }
+    }
+
+    private void populateBarView(int animationType, int animationDuration) {
+        for (BarModel b : data) {
+            addBar(b,animationType,animationDuration);
+        }
+    }
+
+    private void addBar(BarModel data,int animationType,int animationDuration) {
+        BarGroup barGroup = new BarGroup(
+                context,
+                data.getLabel(),
+                data.getColor(),
+                data.getValue(),
+                data.getFillRatio(),
+            animationType,
+            animationDuration,
+            barMargin,
+            verticalSpacing,
+            barHeight,
+            labelFontSize,
+            valueFontSize,
+            labelTextColor,
+            valueTextColor,
+            rippleColor,
+            cornerRadius,
+            LABEL_FONT,
+            VALUE_FONT
+        );
+
+
+        barGroup.setOnTouchListener(new OnTouchListener() {
+            private int CLICK_ACTION_THRESHOLD = 200;
+            private float startX;
+            private float startY;
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        startX = event.getX();
+                        startY = event.getY();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        float endX = event.getX();
+                        float endY = event.getY();
+                        if (isAClick(startX, endX, startY, endY)) {
+                            Log.d("BarView", "you clicked!");
+                            onBarClickListener.onBarClicked(barGroups.indexOf(v));
+                        }
+                        break;
+                    default:
+                        Log.d("BarView", "onTouch:Unknown Event ");
+                break;
+                }
+                return true;
+            }
+
+            private boolean isAClick(float startX, float endX, float startY, float endY) {
+                float differenceX = Math.abs(startX - endX);
+                float differenceY = Math.abs(startY - endY);
+                return !(differenceX > CLICK_ACTION_THRESHOLD/* =5 */ || differenceY > CLICK_ACTION_THRESHOLD);
+            }
+        });
+        barGroups.add(barGroup);
+
+        containerLayout.addView(barGroup);
+        invalidate();
+        requestLayout();
     }
 
     public void setBackgroundColor(String color) {
@@ -148,51 +249,6 @@ public class BarView extends ScrollView implements Constants {
         }
         if (gd != null)
             containerLayout.setBackground(gd);
-    }
-
-    private void addBar(BarModel data) {
-        BarGroup barGroup = new BarGroup(context, data.getLabel(), data.getColor(), data.getValue(),
-                data.getFillRatio(), barMargin, verticalSpacing, barHeight, labelFontSize, valueFontSize,
-                labelTextColor, valueTextColor, rippleColor, cornerRadius,LABEL_FONT,VALUE_FONT);
-        barGroup.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        barGroup.setOnTouchListener(new OnTouchListener() {
-            private int CLICK_ACTION_THRESHOLD = 200;
-            private float startX;
-            private float startY;
-
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    startX = event.getX();
-                    startY = event.getY();
-                    break;
-                case MotionEvent.ACTION_UP:
-                    float endX = event.getX();
-                    float endY = event.getY();
-                    if (isAClick(startX, endX, startY, endY)) {
-                        Log.d("BarView", "you clicked!");
-                        onBarClickListener.onBarClicked(barGroups.indexOf(v));
-                    }
-                    break;
-                default:
-                    Log.d("BarView", "onTouch:Unknown Event ");
-                    break;
-                }
-                return true;
-            }
-
-            private boolean isAClick(float startX, float endX, float startY, float endY) {
-                float differenceX = Math.abs(startX - endX);
-                float differenceY = Math.abs(startY - endY);
-                return !(differenceX > CLICK_ACTION_THRESHOLD/* =5 */ || differenceY > CLICK_ACTION_THRESHOLD);
-            }
-        });
-        barGroups.add(barGroup);
-        containerLayout.addView(barGroup);
-        invalidate();
-        requestLayout();
     }
 
     public BarView(Context context) {
@@ -223,7 +279,11 @@ public class BarView extends ScrollView implements Constants {
         this.addView(containerLayout);
 
         if (attrs != null) {
-            final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BarView, 0, 0);
+
+            final TypedArray a = context.obtainStyledAttributes(attrs,
+                    R.styleable.BarView, 0, 0);
+            animationType = a.getInteger(R.styleable.BarView_introAnimationType, animationType);
+            animationDuration = a.getInteger(R.styleable.BarView_introAnimationDuration, animationDuration);
             verticalSpacing = a.getInteger(R.styleable.BarView_barGroupSpacing, verticalSpacing);
             barHeight = a.getInteger(R.styleable.BarView_barHeight, barHeight);
             labelFontSize = a.getInteger(R.styleable.BarView_labelTextSize, labelFontSize);
@@ -265,6 +325,6 @@ public class BarView extends ScrollView implements Constants {
     public void setCornerRadius(int radius) {
         this.cornerRadius = radius;
         containerLayout.removeAllViews();
-        populateBarView();
+        populateBarView(animationType,animationDuration);
     }
 }

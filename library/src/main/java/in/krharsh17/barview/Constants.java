@@ -6,4 +6,6 @@ public interface Constants {
     String VALUE_TEXT_COLOR = "#FFFFFF";
     String RIPPLE_COLOR = "#EEEEEE";
     String CHAR_ARRAY = "0123456789ABCDEF";
+    Integer DEFAULT_INTRO_ANIMATION = BarView.INTRO_ANIM_NONE;
+    Integer DEFAULT_ANIMATION_DURATION = 1400;
 }
