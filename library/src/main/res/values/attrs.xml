@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="BarView">
-        <attr name="barGroupSpacing" format="integer" />
-        <attr name="barHeight" format="integer" />
-        <attr name="labelTextSize" format="integer"/>
-        <attr name="valueTextSize" format="integer"/>
+        <attr name="barGroupSpacing" format="dimension" />
+        <attr name="barHeight" format="dimension" />
+        <attr name="labelTextSize" format="dimension"/>
+        <attr name="valueTextSize" format="dimension"/>
         <attr name="introAnimationType" format="integer">
             <enum name="none" value="0"/>
             <enum name="expand" value="1"/>
