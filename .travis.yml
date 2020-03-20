@@ -1,0 +1,30 @@
+language: android
+sudo: required
+jdk: oraclejdk8
+android:
+    components:
+        - tools
+        - platform-tools
+        - build-tools-29.0.2
+        - android-29
+        - extra-google-google_play_services
+        - extra-google-m2repository
+        - extra-android-m2repository
+licenses:
+    - android-sdk-license-.+
+before_install:
+    - 'yes | sdkmanager "platforms;android-29"'
+    - 'chmod +x ./gradlew'
+script:
+    - 'echo "Hello! This is Travis"'
+    - './gradlew build'
+before_cache:
+    - 'rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock'
+    - 'rm -fr $HOME/.gradle/caches/*/plugin-resolution/'
+after_success:
+    - 'bash updateApk.sh'
+cache:
+    directories:
+        - $HOME/.gradle/caches/
+        - $HOME/.gradle/wrapper/
+        - $HOME/.android/build-cache
