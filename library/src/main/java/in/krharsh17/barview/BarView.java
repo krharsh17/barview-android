@@ -24,6 +24,7 @@ public class BarView extends ScrollView implements Constants {
     private OnBarClickListener onBarClickListener;
     private List<BarGroup> barGroups;
     private List<BarModel> data;
+    private boolean isDataPopulated;
 
     public static final int INTRO_ANIM_NONE = 0;
     public static final int INTRO_ANIM_EXPAND = 1;
@@ -142,6 +143,7 @@ public class BarView extends ScrollView implements Constants {
         else if (animationType == BarView.INTRO_ANIM_EXPAND){
             populateBarView(BarView.INTRO_ANIM_EXPAND,animationDuration);
         }
+        isDataPopulated = true;
     }
 
     public void setData(List<BarModel> data, boolean isAnimationEnabled) {
@@ -324,7 +326,9 @@ public class BarView extends ScrollView implements Constants {
 
     public void setCornerRadius(int radius) {
         this.cornerRadius = radius;
-        containerLayout.removeAllViews();
-        populateBarView(animationType,animationDuration);
+        if(isDataPopulated) {
+            containerLayout.removeAllViews();
+            populateBarView(animationType, animationDuration);
+        }
     }
 }
