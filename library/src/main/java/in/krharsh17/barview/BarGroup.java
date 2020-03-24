@@ -146,8 +146,6 @@ class BarGroup extends ConstraintLayout implements Constants {
         label.setTextSize(TypedValue.COMPLEX_UNIT_SP, LABEL_FONT_SIZE);
         if(LABEL_FONT!=null)
             label.setTypeface(Typeface.createFromAsset(context.getAssets(), LABEL_FONT));
-        else
-            label.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/josefin_sans.ttf"));
         label.setLayoutParams(labelParams);
         label.setTextAlignment(TEXT_ALIGNMENT_CENTER);
         label.setGravity(Gravity.CENTER_VERTICAL);
@@ -199,11 +197,11 @@ class BarGroup extends ConstraintLayout implements Constants {
         value.setPadding(0, 0, 0, dp(8));
         value.setTextColor(Color.parseColor(valueTextColor));
         value.setTextSize(TypedValue.COMPLEX_UNIT_SP, VALUE_FONT_SIZE);
-        value.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/josefin_sans.ttf"));
         value.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        Typeface tf=get(VALUE_FONT,context);
-        if(tf!=null)
+        if(VALUE_FONT !=null) {
+            Typeface tf = get(VALUE_FONT, context);
             value.setTypeface(tf);
+        }
         value.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
         value.setClickable(true);
         value.setFocusable(true);
