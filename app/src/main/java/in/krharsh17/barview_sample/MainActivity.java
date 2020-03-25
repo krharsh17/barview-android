@@ -30,42 +30,42 @@ public class MainActivity extends AppCompatActivity {
                 "Samsung",
                 "30.91",
                 getRandomColor(),
-                0.31f
+                0.31f,0,0
         ));
 
         barModels.add(new BarModel(
                 "Apple",
                 "25.89",
                 getRandomColor(),
-                1f
+                1f,5,5
         ));
 
         barModels.add(new BarModel(
                 "Huawei",
                 "10.98",
                 getRandomColor(),
-                0.11f
+                0.11f,8,4
         ));
 
         barModels.add(new BarModel(
                 "Xiaomi",
                 "7.8",
                 getRandomColor(),
-                0.07f
+                0.07f,12,7
         ));
 
         barModels.add(new BarModel(
                 "Oppo",
                 "4.31",
                 getRandomColor(),
-                0.04f
+                0.04f,7,18
         ));
 
         barModels.add(new BarModel(
                 "Others",
                 "20.11",
                 getRandomColor(),
-                0.20f
+                0.20f,8,10
         ));
         barView.setData(barModels);
       

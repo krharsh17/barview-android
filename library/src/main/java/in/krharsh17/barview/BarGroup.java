@@ -3,8 +3,13 @@ package in.krharsh17.barview;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RoundRectShape;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -42,6 +47,9 @@ class BarGroup extends ConstraintLayout implements Constants {
     String color;
     String valueText;
     float progress;
+    public int elevation;
+    public int radius;
+    public int numberOfLayers;
 
     private int animationType;
     private int animationDuration = Constants.DEFAULT_ANIMATION_DURATION;
@@ -55,6 +63,31 @@ class BarGroup extends ConstraintLayout implements Constants {
     private String rippleColor = RIPPLE_COLOR;                        // has to be >2
     private int CORNER_RADIUS;
 
+    //one bar has different drawable stacked together with same solid color but different alpha value
+    //this array of string defined different alpha value from 0 to 1
+    //we will use maximum of 18 layers for shadow
+    //numbers of layers can very depending on elevation value
+     public String alphaSet[] = {
+            "#00",
+            "#02",
+            "#04",
+            "#06",
+            "#08",
+            "#10",
+            "#12",
+            "#14",
+            "#16",
+            "#18",
+            "#20",
+            "#22",
+            "#24",
+            "#26",
+            "#28",
+            "#30",
+            "#32",
+            "#35",
+            "#"
+    };
 
     BarGroup(Context context, String labelText, String color, String valueText, float progress) {
         super(context);
@@ -89,7 +122,9 @@ class BarGroup extends ConstraintLayout implements Constants {
         String RIPPLE_COLOUR,
         int CORNER_RADIUS,
         String LABEL_FONT,
-        String VALUE_FONT) { 
+        String VALUE_FONT,
+        int elevation,
+        int radius) {
         super(context);
         this.context = context;
         this.labelText = labelText;
@@ -113,6 +148,8 @@ class BarGroup extends ConstraintLayout implements Constants {
         initial = new View(context);
         bar = new Bar(context);
         value = new TextView(context);
+        this.elevation = elevation;
+        this.radius = radius;
     }
 
     @Override
@@ -123,7 +160,48 @@ class BarGroup extends ConstraintLayout implements Constants {
         initial.setId(View.generateViewId());
         bar.setId(View.generateViewId());
         value.setId(View.generateViewId());
-
+        if(this.elevation>0) {
+            switch (this.elevation) {
+                case 1:
+                case 2:
+                case 3:
+                    this.numberOfLayers = 5;
+                    break;
+                case 4:
+                    this.numberOfLayers = 6;
+                    break;
+                case 5:
+                    this.numberOfLayers = 7;
+                    break;
+                case 6:
+                    this.numberOfLayers = 8;
+                    break;
+                case 7:
+                    this.numberOfLayers = 9;
+                    break;
+                case 8:
+                    this.numberOfLayers = 10;
+                    break;
+                case 9:
+                    this.numberOfLayers = 11;
+                    break;
+                case 10:
+                    this.numberOfLayers = 12;
+                    break;
+                case 11:
+                case 12:
+                case 13:
+                    this.numberOfLayers = 14;
+                    break;
+                case 14:
+                case 15:
+                case 16:
+                    this.numberOfLayers = 16;
+                    break;
+                default:
+                    this.numberOfLayers = 18;
+            }
+        }
         setupLabel();
         setupInitial();
         setupBar();
@@ -153,8 +231,25 @@ class BarGroup extends ConstraintLayout implements Constants {
     }
 
     void setupInitial() {
+        Drawable[] layers = new Drawable[this.numberOfLayers+1];
+        for(int i =0 ;i<=this.numberOfLayers;i++){
+            layers[i] = null;
+        }
+        for(int i=0;i<=this.numberOfLayers;i++){
+            layers[i] = getRoundRect(color.substring(1),i,this.numberOfLayers,this.radius);
+        }
+        float increaseHeight = 1;//To give some extra height of bar for shadow
+        int increaseWidth = 0;//To give some extra width of bar for shadow
+        if(this.numberOfLayers>0){
+            increaseHeight = 1.2f + (this.numberOfLayers - 5) * 0.1f;
+            increaseWidth = 15 + (this.numberOfLayers - 5) * 4;
+        }
+        initialParams = new LayoutParams(dp(12) + increaseWidth, (int) (dp(BAR_HEIGHT) * increaseHeight));
+        initialParams.rightMargin = dp(12);
+        initial.setLayoutParams(initialParams);
+        LayerDrawable splash_test = new LayerDrawable(layers);
+        initial.setBackground(splash_test);
         initial.setVisibility(GONE);
-        initial.setBackgroundColor(Color.parseColor(color));
         Bar.setRippleDrawable(initial, Color.parseColor(color), Color.parseColor(rippleColor));
         initial.setClickable(true);
         initial.setFocusable(true);
@@ -176,16 +271,29 @@ class BarGroup extends ConstraintLayout implements Constants {
     }
 
     public void setupBar() {
-        bar.setVisibility(GONE);
-        int screen_width = Math.round((160*context.getResources().getDisplayMetrics().widthPixels)/(context.getResources().getDisplayMetrics().xdpi));
+        Drawable[] layers = new Drawable[this.numberOfLayers+1];
+        for(int i =0 ;i<=this.numberOfLayers;i++){
+            layers[i] = null;
+        }
+        for(int i=0;i<=this.numberOfLayers;i++){
+            layers[i] = getRoundRect(color.substring(1),i,this.numberOfLayers,this.radius);
+        }
+        float increaseHeight = 1;
+        int increaseWidth = 0;
+        if(this.numberOfLayers>0){
+            increaseHeight = 1.2f + (this.numberOfLayers - 5) * 0.1f;
+            increaseWidth = 20 + (this.numberOfLayers - 5) * 4;
+        }
+        int screen_width = Math.round((160*context.getResources().getDisplayMetrics().widthPixels)/(context.getResources().getDisplayMetrics().xdpi)) ;
         bar.setLayoutParams(new LinearLayout.LayoutParams(
-                screen_width, dp(BAR_HEIGHT)
+                screen_width, (int) (dp(BAR_HEIGHT) * increaseHeight)
         ));
-        bar.setPadding(0, dp(1), 0, dp(1));
+        LayerDrawable splash_test = new LayerDrawable(layers);
+        bar.setBackground(splash_test);
         this.addView(bar);
-        bar.setBackground(setUpRoundBars(Color.parseColor(color)));
+        bar.setVisibility(GONE);
         Bar.setRippleDrawable(bar, Color.parseColor(color), Color.parseColor(rippleColor));
-        bar.setProgress(progress,animationType,animationDuration);
+        bar.setProgress(progress,increaseWidth,animationType,animationDuration);
     }
 
     void setupValue() {
@@ -250,6 +358,62 @@ class BarGroup extends ConstraintLayout implements Constants {
     int dp(float dp) {
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics()));
     }
+
+
+    //elevation
+    //Function for creating drawable of with solid color and with specific alpha
+    public Drawable getRoundRect(String color,int currentLayer,int totalLayer,int radius) {
+
+        if(radius<0){
+            radius = 0;
+        }
+        if(radius>20){
+            radius = 20;
+        }
+
+        int leftTopPadding = 1;
+        if(currentLayer%3==0){
+            leftTopPadding = 2;
+        }
+        int rightPadding = 3;
+        int bottomPadding = 3;
+
+        String shadowalpha = null;
+        int increment = 16 / (totalLayer - 2);
+        int layernumber = 0;
+        if (currentLayer == totalLayer) {
+            shadowalpha = "#";
+        }else{
+            layernumber = increment * currentLayer;
+            if (layernumber >= 17) {
+                layernumber = 17;
+            }
+            shadowalpha = alphaSet[layernumber] ;
+        }
+        RoundRectShape rectShape = new RoundRectShape(new float[]{
+                radius * 2, radius * 2, radius * 2, radius * 2,
+                radius * 2, radius * 2, radius * 2, radius * 2
+        }, null, null);
+        if (totalLayer == currentLayer) {
+            if (radius == 0) {
+                radius = 2;
+            }
+            rectShape = new RoundRectShape(new float[]{
+                    radius * 2, radius * 2, radius * 2, radius * 2,
+                    radius * 2, radius * 2, radius * 2, radius * 2
+            }, null, null);
+        }
+
+        ShapeDrawable shapeDrawable = new ShapeDrawable(rectShape);
+        shapeDrawable.setPadding(leftTopPadding,leftTopPadding,rightPadding,bottomPadding);
+        shapeDrawable.getPaint().setColor(Color.parseColor(shadowalpha + color));
+        shapeDrawable.getPaint().setStyle(Paint.Style.FILL);
+        shapeDrawable.getPaint().setAntiAlias(true);
+        shapeDrawable.getPaint().setFlags(Paint.ANTI_ALIAS_FLAG);
+        return shapeDrawable;
+    }
+
+
 
     public static void expand(final View v, int duration, int targetWidth) {
 

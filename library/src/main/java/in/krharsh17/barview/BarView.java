@@ -186,7 +186,9 @@ public class BarView extends ScrollView implements Constants {
             rippleColor,
             cornerRadius,
             LABEL_FONT,
-            VALUE_FONT
+            VALUE_FONT,
+                data.getElevation(),
+                data.getRadius()
         );
 
 

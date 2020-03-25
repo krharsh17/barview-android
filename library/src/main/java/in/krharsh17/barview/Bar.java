@@ -16,15 +16,15 @@ class Bar extends View {
     Bar(Context context) {
         super(context);
     }
-
-    public void setProgress(float progress,int animationType,int animationDuration) {
+    //increaseWidth is used to give some extra width to bar so that this extra width is used by shadow
+    public void setProgress(float progress,int increaseWidth,int animationType,int animationDuration) {
         ViewGroup.LayoutParams params = this.getLayoutParams();
         if(animationType == BarView.INTRO_ANIM_EXPAND){
             expand(this,animationDuration,Math.round(params.width * (progress)));
         }
         else if (animationType == BarView.INTRO_ANIM_NONE){
             this.setVisibility(VISIBLE);
-            params.width = Math.round(params.width * (progress));
+            params.width = Math.round(params.width * (progress)) + increaseWidth;
             this.setLayoutParams(params);
         }
         invalidate();

@@ -5,6 +5,24 @@ public class BarModel {
     private String value;
     private String color;
     private Float fillRatio;
+    private int elevation;
+    private int radius;
+
+    public int getElevation() {
+        return elevation;
+    }
+
+    public void setElevation(int elevation) {
+        this.elevation = elevation;
+    }
+
+    public int getRadius() {
+        return radius;
+    }
+
+    public void setRadius(int radius) {
+        this.radius = radius;
+    }
 
     public String getLabel() {
     	return this.label;
@@ -38,10 +56,12 @@ public class BarModel {
     	this.fillRatio = fillRatio;
     }
 
-    public BarModel(String label, String value, String color, Float fillRatio) {
+    public BarModel(String label, String value, String color, Float fillRatio, int elevation, int radius) {
         this.label = label;
         this.value = value;
         this.color = color;
         this.fillRatio = fillRatio;
+        this.elevation = elevation;
+        this.radius = radius;
     }
 }
