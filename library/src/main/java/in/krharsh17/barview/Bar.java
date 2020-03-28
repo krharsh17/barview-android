@@ -13,9 +13,22 @@ import android.view.animation.DecelerateInterpolator;
 
 class Bar extends View {
 
+    /**
+     * It can be called by anyone directly from code to create a new instance of the view.
+     * This constructor doesn’t have access to XML attributes, so you have to fill the parameters manually, using setters.
+     *
+     * @param context of the activity
+     */
     Bar(Context context) {
         super(context);
     }
+
+    /**
+     * this fuction sets up the relative width of the Bar with respect to the progress
+     * value given to the BarModel.
+     *
+     * @param progress
+     */
     //increaseWidth is used to give some extra width to bar so that this extra width is used by shadow
     public void setProgress(float progress,int increaseWidth,int animationType,int animationDuration) {
         ViewGroup.LayoutParams params = this.getLayoutParams();
@@ -38,6 +51,14 @@ class Bar extends View {
         this.setFocusable(true);
     }
 
+    /**
+     * Sets a ripple drawable as the background of the bar
+     * The background can display ripples on touch
+     *
+     * @param view - The view to set the background to
+     * @param normalColor - Color when unpressed
+     * @param touchColor - Color when pressed
+     */
     public static void setRippleDrawable(View view, int normalColor, int touchColor) {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -54,6 +75,13 @@ class Bar extends View {
         }
     }
 
+    /**
+     * Animator function for the 'expand' intro animation
+     *
+     * @param v
+     * @param duration
+     * @param targetWidth
+     */
     public static void expand(final View v, int duration, int targetWidth) {
 
         //int prevWidth  = v.getWidth();

@@ -18,6 +18,11 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This is the custom view which is the cumulation of various individual barGroups
+ * extends from a ScrollView and implementing Constant interface
+ *
+ */
 public class BarView extends ScrollView implements Constants {
     private LinearLayout containerLayout;
     private Context context;
@@ -45,76 +50,85 @@ public class BarView extends ScrollView implements Constants {
     private String LABEL_FONT=null,VALUE_FONT=null;
     private String rippleColor = Constants.RIPPLE_COLOR; // has to be >2
 
-    public int getAnimationType(){ return animationType; }
 
-    public void setAnimationType(int animationType){
-        this.animationType = animationType;
-    }
+    /**
+     * parameterized constructors
+     * It can be called by a anyone directly from code to create a new instance of the view.
+     * This constructor doesn’t have access to XML attributes, so you have to fill the parameters manually, using setters.
+     *
+     * @param context of the activity
+     */
+    public BarView(Context context) {
+        super(context);
+        this.context = context;
+        barGroups = new ArrayList<>();
+        containerLayout = new LinearLayout(context);
 
-    public int getAnimationDuration(){ return animationDuration; }
+        containerLayout.setLayoutParams(
+            new ScrollView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        containerLayout.setOrientation(LinearLayout.VERTICAL);
 
-    public void setAnimationDuration(int animationDuration){
-        this.animationDuration = animationDuration;
-    }
+        this.addView(containerLayout);
 
-    public int getBarMargin() {
-        return barMargin;
-    }
-    public void setBarMargin(int barMargin) {
-        this.barMargin = barMargin;
-    }
-    public int getVerticalSpacing() {
-        return verticalSpacing;
-    }
-    public void setVerticalSpacing(int verticalSpacing) {
-        this.verticalSpacing = verticalSpacing;
-    }
-    public int getBarHeight() {
-        return barHeight;
-    }
-    public void setBarHeight(int barHeight) {
-        this.barHeight = barHeight;
     }
 
-    public int getLabelFontSize() {
-        return labelFontSize;
+    /**
+     * parameterized constructors
+     * This is the basic XML constructor. Without it, the layout inflater will crash.
+     * The AttributeSet parameter contains all attribute values provided via XML.
+     *
+     * @param context is the context of the activity
+     * @param attrs are the attribute values which are saved as an AttributeSet
+     */
+    public BarView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        this.context = context;
+        barGroups = new ArrayList<>();
+        containerLayout = new LinearLayout(context);
+
+        containerLayout.setLayoutParams(
+            new ScrollView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+        containerLayout.setOrientation(LinearLayout.VERTICAL);
+
+        this.addView(containerLayout);
+
+        if (attrs != null) {
+
+            final TypedArray a = context.obtainStyledAttributes(attrs,
+                R.styleable.BarView, 0, 0);
+            animationType = a.getInteger(R.styleable.BarView_introAnimationType, animationType);
+            animationDuration = a.getInteger(R.styleable.BarView_introAnimationDuration, animationDuration);
+            verticalSpacing = a.getInteger(R.styleable.BarView_barGroupSpacing, verticalSpacing);
+            barHeight = a.getInteger(R.styleable.BarView_barHeight, barHeight);
+            labelFontSize = a.getInteger(R.styleable.BarView_labelTextSize, labelFontSize);
+            valueFontSize = a.getInteger(R.styleable.BarView_valueTextSize, valueFontSize);
+            VALUE_FONT=a.getString(R.styleable.BarView_labelFont);
+            LABEL_FONT=a.getString(R.styleable.BarView_labelFont);
+            labelTextColor = a.getString(R.styleable.BarView_labelTextColor);
+            valueTextColor = a.getString(R.styleable.BarView_valueTextColor);
+            rippleColor = a.getString(R.styleable.BarView_rippleColor);
+            backgroundColor = a.getString(R.styleable.BarView_backgroundColor);
+            gradientStart = a.getString(R.styleable.BarView_gradientStart);
+            gradientEnd = a.getString(R.styleable.BarView_gradientEnd);
+            gradientDirection = a.getString(R.styleable.BarView_gradientDirection);
+            if (labelTextColor == null)
+                labelTextColor = Constants.LABEL_TEXT_COLOR;
+            if (valueTextColor == null)
+                valueTextColor = Constants.VALUE_TEXT_COLOR;
+            if (rippleColor == null)
+                rippleColor = RIPPLE_COLOR;
+            if (gradientDirection == null)
+                gradientDirection = "horizontal";
+            if (backgroundColor != null)
+                setBackgroundColor(backgroundColor);
+            if (gradientStart != null && gradientEnd != null)
+                setBackgroundGradient(gradientStart, gradientEnd, gradientDirection);
+            a.recycle();
+        }
     }
 
-    public void setLabelFontSize(int labelFontSize) {
-        this.labelFontSize = labelFontSize;
-    }
 
-    public int getValueFontSize() {
-        return valueFontSize;
-    }
-
-    public void setValueFontSize(int valueFontSize) {
-        this.valueFontSize = valueFontSize;
-    }
-
-    public String getLabelTextColor() {
-        return labelTextColor;
-    }
-
-    public void setLabelTextColor(String labelTextColor) {
-        this.labelTextColor = labelTextColor;
-    }
-
-    public String getValueTextColor() {
-        return valueTextColor;
-    }
-
-    public void setValueTextColor(String valueTextColor) {
-        this.valueTextColor = valueTextColor;
-    }
-
-    public String getRippleColor() {
-        return rippleColor;
-    }
-
-    public void setRippleColor(String rippleColor) {
-        this.rippleColor = rippleColor;
-    }
 
     /**
      * Returns a reference to the attached Listener
@@ -161,11 +175,23 @@ public class BarView extends ScrollView implements Constants {
         }
     }
 
+    /**
+     * This method iterates over various BarModels and adds a BarGroup for each
+     * of the BarModels inside private member data
+     */
     private void populateBarView(int animationType, int animationDuration) {
         for (BarModel b : data) {
             addBar(b,animationType,animationDuration);
         }
     }
+
+    /**
+     * This method actuall instanciates BarGroups based on the BarModel passed in as
+     * a param and cumulates it into barGroups.
+     *
+     * @param data is a BarModel that contains all the required to
+     *             construct a BarGroup instance.
+     */
 
     private void addBar(BarModel data,int animationType,int animationDuration) {
         BarGroup barGroup = new BarGroup(
@@ -255,68 +281,14 @@ public class BarView extends ScrollView implements Constants {
             containerLayout.setBackground(gd);
     }
 
-    public BarView(Context context) {
-        super(context);
-        this.context = context;
-        barGroups = new ArrayList<>();
-        containerLayout = new LinearLayout(context);
 
-        containerLayout.setLayoutParams(
-                new ScrollView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        containerLayout.setOrientation(LinearLayout.VERTICAL);
-
-        this.addView(containerLayout);
-
-    }
-
-    public BarView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        this.context = context;
-        barGroups = new ArrayList<>();
-        containerLayout = new LinearLayout(context);
-
-        containerLayout.setLayoutParams(
-                new ScrollView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
-        containerLayout.setOrientation(LinearLayout.VERTICAL);
-
-        this.addView(containerLayout);
-
-        if (attrs != null) {
-
-            final TypedArray a = context.obtainStyledAttributes(attrs,
-                    R.styleable.BarView, 0, 0);
-            animationType = a.getInteger(R.styleable.BarView_introAnimationType, animationType);
-            animationDuration = a.getInteger(R.styleable.BarView_introAnimationDuration, animationDuration);
-            verticalSpacing = a.getInteger(R.styleable.BarView_barGroupSpacing, verticalSpacing);
-            barHeight = a.getInteger(R.styleable.BarView_barHeight, barHeight);
-            labelFontSize = a.getInteger(R.styleable.BarView_labelTextSize, labelFontSize);
-            valueFontSize = a.getInteger(R.styleable.BarView_valueTextSize, valueFontSize);
-            VALUE_FONT=a.getString(R.styleable.BarView_labelFont);
-            LABEL_FONT=a.getString(R.styleable.BarView_labelFont);
-            labelTextColor = a.getString(R.styleable.BarView_labelTextColor);
-            valueTextColor = a.getString(R.styleable.BarView_valueTextColor);
-            rippleColor = a.getString(R.styleable.BarView_rippleColor);
-            backgroundColor = a.getString(R.styleable.BarView_backgroundColor);
-            gradientStart = a.getString(R.styleable.BarView_gradientStart);
-            gradientEnd = a.getString(R.styleable.BarView_gradientEnd);
-            gradientDirection = a.getString(R.styleable.BarView_gradientDirection);
-            if (labelTextColor == null)
-                labelTextColor = Constants.LABEL_TEXT_COLOR;
-            if (valueTextColor == null)
-                valueTextColor = Constants.VALUE_TEXT_COLOR;
-            if (rippleColor == null)
-                rippleColor = RIPPLE_COLOR;
-            if (gradientDirection == null)
-                gradientDirection = "horizontal";
-            if (backgroundColor != null)
-                setBackgroundColor(backgroundColor);
-            if (gradientStart != null && gradientEnd != null)
-                setBackgroundGradient(gradientStart, gradientEnd, gradientDirection);
-            a.recycle();
-        }
-    }
-
+    /**
+     * This function returns a random color based on a constant {@value #CHAR_ARRAY}
+     * It builds up the random hex value by randomly choosing between any of the 16
+     * literals in the char array and appending them one after another
+     *
+     * @return a random color as a randomized hex val
+     */
     public static String getRandomColor() {
         char[] letters = CHAR_ARRAY.toCharArray();
         StringBuilder color = new StringBuilder("#");
@@ -333,4 +305,80 @@ public class BarView extends ScrollView implements Constants {
             populateBarView(animationType, animationDuration);
         }
     }
+
+    /**
+     * setters and getters
+     */
+
+    public int getAnimationType(){ return animationType; }
+
+    public void setAnimationType(int animationType){
+        this.animationType = animationType;
+    }
+
+    public int getAnimationDuration(){ return animationDuration; }
+
+    public void setAnimationDuration(int animationDuration){
+        this.animationDuration = animationDuration;
+    }
+
+    public int getBarMargin() {
+        return barMargin;
+    }
+    public void setBarMargin(int barMargin) {
+        this.barMargin = barMargin;
+    }
+    public int getVerticalSpacing() {
+        return verticalSpacing;
+    }
+    public void setVerticalSpacing(int verticalSpacing) {
+        this.verticalSpacing = verticalSpacing;
+    }
+    public int getBarHeight() {
+        return barHeight;
+    }
+    public void setBarHeight(int barHeight) {
+        this.barHeight = barHeight;
+    }
+
+    public int getLabelFontSize() {
+        return labelFontSize;
+    }
+
+    public void setLabelFontSize(int labelFontSize) {
+        this.labelFontSize = labelFontSize;
+    }
+
+    public int getValueFontSize() {
+        return valueFontSize;
+    }
+
+    public void setValueFontSize(int valueFontSize) {
+        this.valueFontSize = valueFontSize;
+    }
+
+    public String getLabelTextColor() {
+        return labelTextColor;
+    }
+
+    public void setLabelTextColor(String labelTextColor) {
+        this.labelTextColor = labelTextColor;
+    }
+
+    public String getValueTextColor() {
+        return valueTextColor;
+    }
+
+    public void setValueTextColor(String valueTextColor) {
+        this.valueTextColor = valueTextColor;
+    }
+    
+    public String getRippleColor() {
+        return rippleColor;
+    }
+
+    public void setRippleColor(String rippleColor) {
+        this.rippleColor = rippleColor;
+    }
+
 }

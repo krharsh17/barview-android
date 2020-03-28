@@ -1,5 +1,9 @@
 package in.krharsh17.barview;
 
+/**
+ * This class is represents a BarView entity and contains all the attributes
+ * required to instantiate a BarGroup
+ */
 public class BarModel {
     private String label;
     private String value;
@@ -23,6 +27,10 @@ public class BarModel {
     public void setRadius(int radius) {
         this.radius = radius;
     }
+
+    /**
+     * getters and setters
+     */
 
     public String getLabel() {
     	return this.label;
@@ -56,6 +64,16 @@ public class BarModel {
     	this.fillRatio = fillRatio;
     }
 
+
+    /**
+     * parameterized constructor
+     *
+     *
+     * @param label for the barGroup instance
+     * @param value for approximating the length of Bargroup instance
+     * @param color hex color value for the fill of barGroup instance
+     * @param fillRatio for determining the percentage of the bar to be filled
+     */
     public BarModel(String label, String value, String color, Float fillRatio, int elevation, int radius) {
         this.label = label;
         this.value = value;

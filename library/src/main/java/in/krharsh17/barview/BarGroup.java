@@ -26,23 +26,20 @@ import androidx.constraintlayout.widget.Constraints;
 
  
 import java.util.Hashtable;
- 
-class BarGroup extends ConstraintLayout implements Constants {
- 
-    Context context;
 
+/**
+ * this class is the custom view which appears as bars in the BarView
+ * extends ConstraintLayout and implements Constants interface
+ */
+class BarGroup extends ConstraintLayout implements Constants {
+    Context context;
     TextView label;
     View initial;
     Bar bar;
     TextView value;
-
     ConstraintSet constraintSet;
- 
-  
-    public  static Hashtable<String, Typeface> fontCache = new Hashtable<>();
     LayoutParams labelParams;
     LayoutParams initialParams;
-
     String labelText;
     String color;
     String valueText;
@@ -60,13 +57,15 @@ class BarGroup extends ConstraintLayout implements Constants {
     private int VALUE_FONT_SIZE = 9;
     private String labelTextColor = LABEL_TEXT_COLOR;
     private String valueTextColor = VALUE_TEXT_COLOR,VALUE_FONT=null,LABEL_FONT=null;
-    private String rippleColor = RIPPLE_COLOR;                        // has to be >2
+    private String rippleColor = RIPPLE_COLOR;
     private int CORNER_RADIUS;
 
-    //one bar has different drawable stacked together with same solid color but different alpha value
-    //this array of string defined different alpha value from 0 to 1
-    //we will use maximum of 18 layers for shadow
-    //numbers of layers can very depending on elevation value
+    /**
+     * one bar has different drawable stacked together with same solid color but different alpha value
+     * this array of string defined different alpha value from 0 to 1
+     * we will use maximum of 18 layers for shadow
+     * numbers of layers can very depending on elevation value
+     */
      public String alphaSet[] = {
             "#00",
             "#02",
@@ -89,6 +88,17 @@ class BarGroup extends ConstraintLayout implements Constants {
             "#"
     };
 
+    public  static Hashtable<String, Typeface> fontCache = new Hashtable<>();
+
+    /**
+     * parameterized constructor
+     *
+     * @param context of the activity
+     * @param labelText for the barGroup instance
+     * @param color hex color value for the fill of barGroup instance
+     * @param valueText for approximating the length of Bargroup instance
+     * @param progress marking the progress of the bar
+     */
     BarGroup(Context context, String labelText, String color, String valueText, float progress) {
         super(context);
         this.context = context;
@@ -104,6 +114,28 @@ class BarGroup extends ConstraintLayout implements Constants {
         value = new TextView(context);
     }
 
+    /**
+     * parameterized constructor
+     *
+     * @param context of the activity
+     * @param labelText for the barGroup instance
+     * @param color hex color value for the fill of barGroup instance
+     * @param valueText for approximating the length of Bargroup instance
+     * @param progress marking the progress of the bar
+     *
+     * self explanatory constants
+     * @param BAR_MARGIN
+     * @param VERTICAL_SPACING
+     * @param BAR_HEIGHT
+     * @param LABEL_FONT_SIZE
+     * @param VALUE_FONT_SIZE
+     * @param labelTextColor
+     * @param VALUE_TEXT_COLOR
+     * @param RIPPLE_COLOUR
+     * @param CORNER_RADIUS
+     * @param LABEL_FONT
+     * @param VALUE_FONT
+     */
     public BarGroup(
         Context context, 
         String labelText, 
@@ -211,6 +243,9 @@ class BarGroup extends ConstraintLayout implements Constants {
 
     }
 
+    /**
+     * Initializer function for the label segment
+     */
     void setupLabel() {
         labelParams = new Constraints.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
         labelParams.setMargins(
@@ -230,6 +265,10 @@ class BarGroup extends ConstraintLayout implements Constants {
         this.addView(label);
     }
 
+    /**
+     * Initializer function for the initial block
+     *
+     */
     void setupInitial() {
         Drawable[] layers = new Drawable[this.numberOfLayers+1];
         for(int i =0 ;i<=this.numberOfLayers;i++){
@@ -270,6 +309,10 @@ class BarGroup extends ConstraintLayout implements Constants {
 
     }
 
+    /**
+     * Initializer function for the main bar
+     *
+     */
     public void setupBar() {
         Drawable[] layers = new Drawable[this.numberOfLayers+1];
         for(int i =0 ;i<=this.numberOfLayers;i++){
@@ -296,6 +339,10 @@ class BarGroup extends ConstraintLayout implements Constants {
         bar.setProgress(progress,increaseWidth,animationType,animationDuration);
     }
 
+    /**
+     * Initializer function for the value tooltip
+     *
+     */
     void setupValue() {
 
         value.setText(valueText);
@@ -316,6 +363,14 @@ class BarGroup extends ConstraintLayout implements Constants {
         Bar.setRippleDrawable(value, Color.parseColor(color), Color.parseColor(rippleColor));
         this.addView(value);
     }
+
+    /**
+     * Loads font from assets
+     *
+     * @param name
+     * @param context
+     * @return
+     */
     public static Typeface get(String name, Context context) {
         Typeface tf = fontCache.get(name);
         if (tf == null) {
@@ -328,6 +383,11 @@ class BarGroup extends ConstraintLayout implements Constants {
         }
         return tf;
     }
+
+    /**
+     * Sets constraints for all pieces of a BarGroup instance
+     *
+     */
     void applyConstraints() {
         constraintSet = new ConstraintSet();
         constraintSet.clone(this);
@@ -355,13 +415,26 @@ class BarGroup extends ConstraintLayout implements Constants {
         constraintSet.applyTo(this);
     }
 
+    /**
+     * Converts density independent pixel units (dp) to pixel units (px)
+     *
+     * @param dp
+     * @return
+     */
     int dp(float dp) {
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics()));
     }
 
-
-    //elevation
-    //Function for creating drawable of with solid color and with specific alpha
+    /**
+     * elevation
+     * Function for creating drawable of with solid color and with specific alpha
+     *
+     * @param color
+     * @param currentLayer
+     * @param totalLayer
+     * @param radius
+     * @return
+     */
     public Drawable getRoundRect(String color,int currentLayer,int totalLayer,int radius) {
 
         if(radius<0){
@@ -415,6 +488,13 @@ class BarGroup extends ConstraintLayout implements Constants {
 
 
 
+    /**
+     * Animator function for the 'expand' intro animation
+     *
+     * @param v
+     * @param duration
+     * @param targetWidth
+     */
     public static void expand(final View v, int duration, int targetWidth) {
 
         //int prevWidth  = v.getWidth();
@@ -435,6 +515,11 @@ class BarGroup extends ConstraintLayout implements Constants {
         valueAnimator.start();
     }
 
+    /**
+     * Parses the label text to truncate or hyphenize the string to fit in the given space
+     * @param labelText
+     * @return
+     */
     private String parseLabel(String labelText) {
         String[] tokens = labelText.split(" ");
         StringBuilder finalizedString = new StringBuilder();
@@ -457,6 +542,11 @@ class BarGroup extends ConstraintLayout implements Constants {
         return finalizedString.toString();
     }
 
+    /**
+     * The animation function takes the actual view-group, animation duration and target width in dp as it's arguments
+     * and takes initial width as 0 dp. After this, using ValueAnimator, the barview is made to expand to provided width
+     * in the specified time duration and it's visibility is set to visible during animation.
+     */
     public static class ResizeAnimation extends Animation {
         public final int targetHeight;
         public View view;
@@ -487,6 +577,11 @@ class BarGroup extends ConstraintLayout implements Constants {
             return true;
         }
     }
+
+    /**
+     * This creates a gradient drawable background for the bars - sets a shape, a color and radius for the corners.
+     * @param color is the color in int which is used as the background color.
+     */
     public GradientDrawable setUpRoundBars(int color) {
         GradientDrawable gradientDrawable = new GradientDrawable();
         gradientDrawable.setShape(GradientDrawable.RECTANGLE);
