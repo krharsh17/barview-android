@@ -17,6 +17,12 @@ This project has been selected for **GirlScript Summer of Code 2020**. To begin 
 -  Make the changes in code and create a PR on the main repository
 -  Ask for a review from a mentor/admin and wait until your code gets merged!
 
+## Table of Contents
+-  [Goal](#goal)
+-  [Current Progress](#current-progress)
+-  [Installation](#installation)
+-  [Usage](#usage)
+
 ## Goal
 
 ![Design](https://i.ibb.co/C8XtG1F/Metric-Screen-Bar-Graph.png)
