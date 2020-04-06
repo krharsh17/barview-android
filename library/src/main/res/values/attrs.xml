@@ -11,14 +11,16 @@
         </attr>
         <attr name="introAnimationDuration" format="integer"/>
 
-        <attr name="labelTextColor" format="string"/>
-        <attr name="valueTextColor" format="string"/>
-        <attr name="rippleColor" format="string"/>
+ 
+        <attr name="labelTextColor" format="color"/>
+        <attr name="valueTextColor" format="color"/>
+        <attr name="rippleColor" format="color"/>
         <attr name="labelFont" format="string"/>
         <attr name="valueFont" format="string"/>
-        <attr name="backgroundColor" format="string"/>
+        <attr name="backgroundColor" format="color"/>
         <attr name="gradientStart" format="string"/>
         <attr name="gradientEnd" format="string"/>
         <attr name="gradientDirection" format="string"/>
+ 
     </declare-styleable>
 </resources>
