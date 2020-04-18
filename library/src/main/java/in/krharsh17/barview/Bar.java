@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 
 class Bar extends View {
-
     /**
      * It can be called by anyone directly from code to create a new instance of the view.
      * This constructor doesn’t have access to XML attributes, so you have to fill the parameters manually, using setters.
@@ -30,12 +29,11 @@ class Bar extends View {
      * @param progress
      */
     //increaseWidth is used to give some extra width to bar so that this extra width is used by shadow
-    public void setProgress(float progress,int increaseWidth,int animationType,int animationDuration) {
+    public void setProgress(float progress, int increaseWidth, int animationType, int animationDuration) {
         ViewGroup.LayoutParams params = this.getLayoutParams();
-        if(animationType == BarView.INTRO_ANIM_EXPAND){
-            expand(this,animationDuration,Math.round(params.width * (progress)));
-        }
-        else if (animationType == BarView.INTRO_ANIM_NONE){
+        if (animationType == BarView.INTRO_ANIM_EXPAND) {
+            expand(this, animationDuration, Math.round(params.width * (progress)));
+        } else if (animationType == BarView.INTRO_ANIM_NONE) {
             this.setVisibility(VISIBLE);
             params.width = Math.round(params.width * (progress)) + increaseWidth;
             this.setLayoutParams(params);

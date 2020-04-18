@@ -31,43 +31,40 @@ public class BarModel {
     /**
      * getters and setters
      */
-
     public String getLabel() {
-    	return this.label;
+        return this.label;
     }
 
     public void setLabel(String label) {
-    	this.label = label;
+        this.label = label;
     }
 
-     public String getValue() {
-    	return this.value;
+    public String getValue() {
+        return this.value;
     }
 
     public void setValue(String value) {
-    	this.value = value;
+        this.value = value;
     }
 
-     public String getColor() {
-    	return this.color;
+    public String getColor() {
+        return this.color;
     }
 
     public void setColor(String color) {
-    	this.color = color;
+        this.color = color;
     }
 
-     public Float getFillRatio() {
-    	return this.fillRatio;
+    public Float getFillRatio() {
+        return this.fillRatio;
     }
 
     public void setFillRatio(Float fillRatio) {
-    	this.fillRatio = fillRatio;
+        this.fillRatio = fillRatio;
     }
-
 
     /**
      * parameterized constructor
-     *
      *
      * @param label for the barGroup instance
      * @param value for approximating the length of Bargroup instance

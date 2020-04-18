@@ -3,13 +3,13 @@
     <declare-styleable name="BarView">
         <attr name="barGroupSpacing" format="dimension" />
         <attr name="barHeight" format="dimension" />
-        <attr name="labelTextSize" format="dimension"/>
-        <attr name="valueTextSize" format="dimension"/>
+        <attr name="labelTextSize" format="dimension" />
+        <attr name="valueTextSize" format="dimension" />
         <attr name="introAnimationType" format="integer">
-            <enum name="none" value="0"/>
-            <enum name="expand" value="1"/>
+            <enum name="none" value="0" />
+            <enum name="expand" value="1" />
         </attr>
-        <attr name="introAnimationDuration" format="integer"/>
+        <attr name="introAnimationDuration" format="integer" />
 
  
         <attr name="labelTextColor" format="color"/>
