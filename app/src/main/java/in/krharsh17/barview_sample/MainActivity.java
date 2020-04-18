@@ -1,5 +1,6 @@
 package in.krharsh17.barview_sample;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         barModels.add(new BarModel(
             "Samsung",
             "30.91",
-            getRandomColor(),
+            getRandomColor(new Color().rgb(0,128,0)),
             0.31f, 0, 0
         ));
 

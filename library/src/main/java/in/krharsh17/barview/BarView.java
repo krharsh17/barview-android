@@ -14,6 +14,7 @@ import android.widget.ScrollView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * This is the custom view which is the cumulation of various individual barGroups
@@ -288,6 +289,44 @@ public class BarView extends ScrollView implements Constants {
             color.append(letters[(int) Math.round(Math.floor(Math.random() * 16))]);
         }
         return color.toString();
+    }
+
+    /**
+     * This function approximates the passed in color based on the tolerance value defined in
+     * the method . It first deconstructs the passed in @ColorInt into its components and then
+     * randomly adding or subtracting integers in the range of tolerance and then finally
+     * constructing them all up together and returning a hex literal of the format #XXXXXX
+     *
+     * @param approximateColor is the color user wants the bar to be approximately like
+     * @return
+     */
+    public static String getRandomColor(Integer approximateColor) {
+        Integer tolerance=5;
+        Integer blue=approximateColor&0x000000ff;
+        Integer green=(approximateColor&0x0000ff00)>>8;
+        Integer red=(approximateColor&0x00ff0000)>>16;
+
+        blue = Math.min(Math.max(0,blue+getRandomNumberInRange(-tolerance,tolerance)),255);
+        green = Math.min(Math.max(0,green+getRandomNumberInRange(-tolerance,tolerance)),255);
+        red = Math.min(Math.max(0,red+getRandomNumberInRange(-tolerance,tolerance)),255);
+
+        Integer newApproximateColor=0xff000000 | (red << 16) | (green << 8) | blue;
+
+        String approximateColorHexLiteral =Integer.toHexString(newApproximateColor);
+        return ("#"+approximateColorHexLiteral.substring(2));
+    }
+
+    /**
+     * Helper function returns any random integer between the specified bounds
+     * [min..max] both inclusive
+     *
+     * @param min variance the user wants in the approximate color
+     * @param max variance the user wants in the approximate color
+     * @return
+     */
+    private static int getRandomNumberInRange(int min, int max) {
+        Random r = new Random();
+        return r.nextInt((max - min) + 1) + min;
     }
 
     public void setCornerRadius(int radius) {
