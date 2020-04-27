@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">BarView</string>
+    <string name="highlight">Highlight</string>
+    <string name="fade">Fade</string>
+    <string name="delete">Delete</string>
+    <string name="removeHighlight">Remove Highlight?</string>
+    <string name="removeFade">Remove Fade?</string>
+    <string name="green">Green</string>
+    <string name="yellow">Yellow</string>
+    <string name="pink">Pink</string>
+    <string name="blue">Blue</string>
+    <string name="selectHighlightColor">Select a Highlight Color :</string>
 </resources>
