@@ -9,7 +9,7 @@
 
 BarView is a native android UI library that allows representation of data in bar graph with slick look and smooth animations. Currently the library is in a very early stage so it does not look very good 😋.
 
-This project has been selected for **GirlScript Summer of Code 2020**. To begin contributing
+This project has been selected for **[GirlScript Summer of Code 2020](https://www.gssoc.tech/)**. To begin contributing
 -  Go through the [guidelines](https://github.com/krharsh17/barview-android/blob/develop/CONTRIBUTING.md)
 -  Fork a copy of the project to your profile
 -  Go through the issues and comment on one to get it assigned to yourself

@@ -45,7 +45,7 @@ If you wish to rebase you should be following the [Golden Rule](https://www.atla
 ### Building
 
 The BarView project is split into 2 modules
-1. `app` - a sample app to test the braview library during development
+1. `app` - a sample app to test the barview library during development
 1. `library` - the main library barview, which gets deployed to end user applications
 
 The default build is `debug`, with this variant you can use a debugger while developing. To install the application click the `run` button in Android Studio with the `app` configuration selected while you have a device connected.
@@ -57,6 +57,6 @@ PR should be linted properly locally. There is no system restriction applied for
 ### Continous Integration
 
 All PRs will have all these tests run and a combined coverage report will be attached, if coverage is to go down the PR will be marked failed. On Travis CI the automated tests are run on an emulator. To
-learn more about the commands run on the CI please refer to [.appveyor.yml](https://github.com/krharsh17/barview-android/blob/develop/appveyor.yml)
+learn more about the commands run on the CI please refer to [.travis.yml](https://github.com/krharsh17/barview-android/blob/develop/.travis.yml)
 
 ### Hope you have a wonderful experience contributing to the project 🎉
