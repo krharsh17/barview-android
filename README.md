@@ -95,4 +95,14 @@ barview.setData(barModels);
 
 ```
 
+## System Requirements
+
+-  Git
+-  Android Studio
+
+## Learning Resources
+
+-  https://developer.android.com/studio/install
+-  https://try.github.io/
+
 The demo apk for the project is available [here](https://github.com/krharsh17/barview-android/blob/develop/demo-apk/app-debug.apk)
