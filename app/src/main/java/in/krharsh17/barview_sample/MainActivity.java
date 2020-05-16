@@ -2,7 +2,6 @@ package in.krharsh17.barview_sample;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -73,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         barView.setOnBarClickListener(new BarView.OnBarClickListener() {
             @Override
             public void onBarClicked(int pos) {
-                Toast.makeText(MainActivity.this, "Bar at position " + pos, Toast.LENGTH_SHORT).show();
+                //Do something
             }
         });
     }
