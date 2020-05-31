@@ -10,7 +10,8 @@
             <enum name="none" value="0" />
             <enum name="expand" value="1" />
         </attr>
-        <attr name="introAnimationDuration" format="integer" />
+        <attr name="introAnimationDuration" format="integer"/>
+        <attr name="valueTooltipCornerRadius" format="integer"/>
 
  
         <attr name="labelTextColor" format="color"/>

@@ -2,10 +2,14 @@ package in.krharsh17.barview;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
@@ -63,6 +67,8 @@ class BarGroup extends ConstraintLayout implements Constants {
     private String valueTextColor = VALUE_TEXT_COLOR, VALUE_FONT = null, LABEL_FONT = null;
     private String rippleColor = RIPPLE_COLOR;
     private int CORNER_RADIUS;
+    private int VALUE_TOOLTIP_CORNER_RADIUS = 0;
+
     /**
      * one bar has different drawable stacked together with same solid color but different alpha value
      * this array of string defined different alpha value from 0 to 1
@@ -139,26 +145,28 @@ class BarGroup extends ConstraintLayout implements Constants {
      * @param VALUE_FONT
      */
     public BarGroup(
-            Context context,
-            String labelText,
-            String color,
-            String valueText,
-            float progress,
-            int animationType,
-            int animationDuration,
-            int BAR_MARGIN,
-            int VERTICAL_SPACING,
-            int BAR_HEIGHT,
-            int LABEL_FONT_SIZE,
-            int VALUE_FONT_SIZE,
-            String labelTextColor,
-            String VALUE_TEXT_COLOR,
-            String RIPPLE_COLOUR,
-            int CORNER_RADIUS,
-            String LABEL_FONT,
-            String VALUE_FONT,
-            int elevation,
-            int radius) {
+        Context context, 
+        String labelText, 
+        String color, 
+        String valueText, 
+        float progress,
+        int animationType,
+        int animationDuration,
+        int BAR_MARGIN, 
+        int VERTICAL_SPACING, 
+        int BAR_HEIGHT, 
+        int LABEL_FONT_SIZE, 
+        int VALUE_FONT_SIZE, 
+        String labelTextColor,
+        String VALUE_TEXT_COLOR, 
+        String RIPPLE_COLOUR,
+        int CORNER_RADIUS,
+        int VALUE_TOOLTIP_CORNER_RADIUS,
+        String LABEL_FONT,
+        String VALUE_FONT,
+        int elevation,
+        int radius) {
+
         super(context);
         this.context = context;
         this.labelText = labelText;
@@ -178,6 +186,7 @@ class BarGroup extends ConstraintLayout implements Constants {
         this.LABEL_FONT = LABEL_FONT;
         this.VALUE_FONT = VALUE_FONT;
         this.CORNER_RADIUS = CORNER_RADIUS;
+        this.VALUE_TOOLTIP_CORNER_RADIUS = VALUE_TOOLTIP_CORNER_RADIUS;
         label = new TextView(context);
         initial = new View(context);
         bar = new Bar(context);
@@ -323,14 +332,44 @@ class BarGroup extends ConstraintLayout implements Constants {
     }
 
     /**
-     * Initializer function for the value tooltip
+     * Initializer function for the value tooltip. By default the corner radius of tooltips is zero
+     * and if user specifies a value for corner radius then the changes ar applied in the tooltips.
+     *
+
      */
     private void setupValue() {
         value.setText(valueText);
-        value.setBackground(context.getResources().getDrawable(R.drawable.label_background));
+        //value.setBackground(context.getResources().getDrawable(R.drawable.label_background));
+        Bitmap bitmap = Bitmap.createBitmap(
+                110, // Width
+                60, // Height
+                Bitmap.Config.ARGB_8888 // Config
+        );
+        Canvas canvas = new Canvas(bitmap);
+        canvas.drawColor(Color.WHITE);
+        Paint paint = new Paint();
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(Color.BLACK);
+        paint.setAntiAlias(true);
+        int offset = 5;
+        RectF rectF = new RectF(
+                offset, // left
+                offset, // top
+                canvas.getWidth() - offset, // right
+                canvas.getHeight() - offset // bottom
+        );
+        int cornersRadius = VALUE_TOOLTIP_CORNER_RADIUS;
+        canvas.drawRoundRect(
+                rectF, // rect
+                cornersRadius, // rx
+                cornersRadius, // ry
+                paint // Paint
+        ); // method to draw rectangular tooltip with specified corner radius
+        Drawable d = new BitmapDrawable(getResources(), bitmap); // conversion of bitmap into drawable
+        value.setBackground(d);
         value.setRotation(90);
         value.setGravity(Gravity.CENTER);
-        value.setPadding(0, 0, 0, dp(8));
+        value.setPadding(0, dp(8), 0, dp(8));
         value.setTextColor(Color.parseColor(valueTextColor));
         value.setTextSize(TypedValue.COMPLEX_UNIT_SP, VALUE_FONT_SIZE);
         value.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));

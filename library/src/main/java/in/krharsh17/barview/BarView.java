@@ -34,6 +34,7 @@ public class BarView extends ScrollView implements Constants {
     private int barHeight = 20;
     private int labelFontSize = 18;
     private int valueFontSize = 9;
+    private int valueTooltipCornerRadius = 0;
     private int animationType = Constants.DEFAULT_INTRO_ANIMATION;
     private int animationDuration = Constants.DEFAULT_ANIMATION_DURATION;
     private String backgroundColor;
@@ -92,6 +93,7 @@ public class BarView extends ScrollView implements Constants {
 
             final TypedArray a = context.obtainStyledAttributes(attrs,
                 R.styleable.BarView, 0, 0);
+            valueTooltipCornerRadius = a.getInteger(R.styleable.BarView_valueTooltipCornerRadius, valueTooltipCornerRadius);
             animationType = a.getInteger(R.styleable.BarView_introAnimationType, animationType);
             animationDuration = a.getInteger(R.styleable.BarView_introAnimationDuration, animationDuration);
             verticalSpacing = a.getInteger(R.styleable.BarView_barGroupSpacing, verticalSpacing);
@@ -205,6 +207,7 @@ public class BarView extends ScrollView implements Constants {
             valueTextColor,
             rippleColor,
             cornerRadius,
+            valueTooltipCornerRadius,
             LABEL_FONT,
             VALUE_FONT,
             data.getElevation(),
@@ -344,7 +347,16 @@ public class BarView extends ScrollView implements Constants {
         return animationType;
     }
 
-    public void setAnimationType(int animationType) {
+    public int getValueTooltipCornerRadius() {
+        return valueTooltipCornerRadius;
+    }
+
+    public void setValueTooltipCornerRadius(int valueTooltipCornerRadius) {
+        this.valueTooltipCornerRadius = valueTooltipCornerRadius;
+    }
+
+    public void setAnimationType(int animationType){
+
         this.animationType = animationType;
     }
 
